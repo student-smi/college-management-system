@@ -1,3 +1,130 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "@flaticon/flaticon-uicons/css/all/all";
+
+
+.react-calendar{
+    width: 100% !important;
+    border:  none !important;
+    font-family:  initial;
+}
+
+.calendar__tile--active {
+   background-color: "#C3EBFA" ;
+   border-radius:  5px;
+}
+
+.rbc-btn-group:first-child{
+    display: none !important;
+}
+
+.rbc-toolbar-label{
+
+    text-align: right !important;
+}
+.rbc-btn-group {
+    gap: 20px !important;
+}
+.rbc-btn-group .rbc-active {
+    box-shadow:  none !important;
+    background-color: #EDF9FD !important;
+    border-radius: 5px  !important;
+   
+}
+.rbc-row-content{
+    display: none !important;
+}
+.rbc-time-header{
+    display: none !important;
+}
+.rbc-label .rbc-time-header-gutter{
+    border: 1 #EDF9FD !important;
+}
+
+ .rbc-label {
+    font-size:  small !important;
+    padding: 0 5px !important;
+}
+/* .rbc-event:nth-child(1){
+    background-color: #C3EBFA !important;
+}
+
+.rbc-event:nth-child(2){
+    background-color: #CFCEFF !important;
+
+
+}
+
+.rbc-event:nth-child(3){
+    background-color:#FAE27C !important;
+
+
+}
+
+.rbc-event:nth-child(4){
+    background-color: #CFCEFF !important;
+
+
+}.rbc-event:nth-child(5){
+    background-color: #CFCEFF !important;
+
+
+}
+.rbc-event:nth-child(6){
+    background-color: #CFCEFF !important;
+
+
+}.rbc-event:nth-child(7){
+    background-color: #CFCEFF !important;
+
+
+}
+ */
+
+ .rbc-event{
+    border: none !important;
+    padding: 10px !important;
+    color: black !important;
+    width: 99% !important;
+     margin: 10px !important;
+ }
+.rbc-event:nth-child(1) {
+    background-color: #C3EBFA !important; /* Light Blue */
+   
+}
+
+.rbc-event:nth-child(2) {
+    background-color: #CFCEFF !important; /* Light Purple */
+  
+}
+
+.rbc-event:nth-child(3) {
+    background-color: #FAE27C !important; /* Yellow */
+  
+}
+
+.rbc-event:nth-child(4) {
+    background-color: #FFD6E0 !important; /* Soft Pink */
+   
+}
+
+.rbc-event:nth-child(5) {
+    background-color: #D1FFD6 !important; /* Light Green */
+   
+}
+
+.rbc-event:nth-child(6) {
+    background-color: #FFE5B4 !important; /* Peach */
+   
+}
+
+.rbc-event:nth-child(7) {
+    background-color: #B4F0FF !important; /* Aqua */
+  
+}
+
+.rbc-event:nth-child(8) {
+    background-color: #D1FFD6 !important; /* Light Green */
+   
+}

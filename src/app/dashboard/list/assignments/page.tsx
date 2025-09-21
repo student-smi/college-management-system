@@ -1,0 +1,205 @@
+import Formdata from "@/components/Formdata";
+import Pagination from "@/components/Pagination";
+import Table from "@/components/Table";
+import TableSearch from "@/components/TableSearch";
+//import { a } from "@/lib/data";
+import { ITEM_PER_PAGE } from "@/lib/Item_per_page";
+import { prisma } from "@/lib/prisma";
+import { auth } from "@clerk/nextjs/server";
+import { Assignment, Class, Prisma, Subject, Teacher } from "@prisma/client";
+import { strict } from "assert";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+
+let cloumn = [
+  {
+    header: "Student name",
+    accesor: "info",
+    className: "",
+  },
+
+  {
+    header: "Class",
+    accesor: "Class",
+    className: "",
+  },
+
+  {
+    header: "teacher",
+    accesor: "techer",
+    className: " hidden md:table-cell",
+  },
+  {
+    header: "DueDate",
+    accesor: "dueDate",
+    className: " hidden md:table-cell",
+  },
+
+  {
+    header: "Actions",
+    accesor: "actions",
+    className: "",
+  },
+];
+
+type assList = Assignment & {
+  lesson: {
+    teacher: Teacher;
+    class: Class;
+    subject: Subject;
+  };
+};
+const reanderRow = async (item: assList) => {
+  const { sessionClaims } = await auth();
+  
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  return (
+    <tr
+      key={item.id}
+      className="  even:bg-slate-100 gap-4  border-b  border-gray-200 hover:bg-lamaPurpleLight"
+    >
+      <td className=" ">{item.lesson.subject.name}</td>
+
+      <td>{item.lesson.class.name}</td>
+      <td className="  text-sm  hidden   md:table-cell">
+        {item.lesson.teacher.name + " " + item.lesson.teacher.surname}
+      </td>
+      <td className="  text-sm  hidden   md:table-cell">
+        {Intl.DateTimeFormat().format(item.dueDate)}
+      </td>
+
+      <td className=" flex  justify-center items-center gap-2  text-sm">
+        {(role === "admin" || role === "teacher") && (
+          <>
+            <Formdata type="update" table="assignment" id={item.id} />
+            <Formdata type="delete" table="assignment" id={item.id} />
+          </>
+        )}
+      </td>
+    </tr>
+  );
+};
+
+const assignmentsList = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) => {
+  const { sessionClaims, userId } = await auth();
+  console.log(sessionClaims);
+
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  const { page, ...queryParams } = searchParams;
+  let p = page ? parseInt(page) : 1;
+
+  const query: Prisma.AssignmentWhereInput = {};
+  query.lesson = {};
+  if (queryParams) {
+    for (const [key, value] of Object.entries(queryParams)) {
+      if (value) {
+        switch (key) {
+          case "teacherId":
+            query.lesson = {
+              teacherId: value,
+            };
+            break;
+
+          case "classId":
+            query.lesson = {
+              classId: parseInt(value),
+            };
+            break;
+          case "search":
+            query.lesson = {
+              subject: {
+                name: { contains: value, mode: "insensitive" },
+              },
+            };
+            break;
+        }
+      }
+    }
+  }
+
+  switch (role) {
+    case "admin":
+      break;
+    case "teacher":
+      query.lesson = { teacherId: userId! };
+      break;
+
+    case "student":
+      query.lesson.class = {
+        students: {
+          some: {
+            id: userId!,
+          },
+        },
+      };
+      break;
+
+    case "parent":
+      query.lesson.class = {
+        students: {
+          some: {
+            parentId: userId!,
+          },
+        },
+      };
+      break;
+    default:
+      break;
+  }
+  let [data, count] = await prisma.$transaction([
+    prisma.assignment.findMany({
+      where: query,
+      include: {
+        lesson: {
+          select: {
+            class: { select: { name: true } },
+            subject: { select: { name: true } },
+            teacher: { select: { name: true, surname: true } },
+          },
+        },
+      },
+
+      take: ITEM_PER_PAGE,
+      skip: ITEM_PER_PAGE * (p - 1),
+    }),
+    prisma.assignment.count({ where: query }),
+  ]);
+
+  return (
+    <div className=" flex-1 items-center rounded-md bg-white m-4 ">
+      {/* heading */}
+      <div className=" flex justify-between items-center ">
+        <h1 className="  hidden md:block text-lg font-semibold">All classes</h1>
+        <div className=" flex flex-col  md:flex-row gap-3  w-full md:w-auto">
+          <TableSearch />
+          <div className=" flex  items-center w-full md:w-auto  justify-end  gap-2">
+            <button className=" rounded-full p-2 bg-lamaYellow   ">
+              <Image src="/filter.png" alt="" width={14} height={14} />
+            </button>
+            <button className=" rounded-full p-2 bg-lamaYellow  ">
+              <Image src="/sort.png" alt="" width={14} height={14} />
+            </button>
+            {(role === "admin" || role === "teacher") && (
+              <Formdata type="create" table="assignment" />
+            )}
+          </div>
+        </div>
+      </div>
+      {/* list of techaer */}
+      <div>
+        <Table cloumn={cloumn} reanderRow={reanderRow} data={data} />
+      </div>
+      {/* footer */}
+      <div>
+        <Pagination page={p} count={count} />
+      </div>
+    </div>
+  );
+};
+
+export default assignmentsList;
