@@ -1,4 +1,5 @@
 import Formdata from "@/components/Formdata";
+import FromCon from "@/components/FromCon";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
@@ -72,8 +73,8 @@ const reanderRow = async (item: assList) => {
       <td className=" flex  justify-center items-center gap-2  text-sm">
         {(role === "admin" || role === "teacher") && (
           <>
-            <Formdata type="update" table="assignment" id={item.id} />
-            <Formdata type="delete" table="assignment" id={item.id} />
+            <FromCon type="update" table="assignment" id={item.id} data={item} />
+            <FromCon type="delete" table="assignment" id={item.id} />
           </>
         )}
       </td>
@@ -185,7 +186,7 @@ const assignmentsList = async ({
               <Image src="/sort.png" alt="" width={14} height={14} />
             </button>
             {(role === "admin" || role === "teacher") && (
-              <Formdata type="create" table="assignment" />
+              <FromCon type="create" table="assignment" />
             )}
           </div>
         </div>
