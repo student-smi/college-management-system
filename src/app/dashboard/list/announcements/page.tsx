@@ -1,4 +1,5 @@
 import Formdata from "@/components/Formdata";
+import FromCon from "@/components/FromCon";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
@@ -63,7 +64,7 @@ const reanderRow =async (item: announcementslist) => {
       >
         <td className=" ">{item.title}</td>
 
-        <td className="text-sm  hidden   md:table-cell">{item.class.name}</td>
+        <td className="text-sm  hidden   md:table-cell">{item?.class?.name || ""}</td>
        
         <td className="  text-sm  hidden   md:table-cell">{Intl.DateTimeFormat().format(item.date)}</td>
        
@@ -72,8 +73,8 @@ const reanderRow =async (item: announcementslist) => {
           {
 
             role === "admin" &&   
-              <><Formdata type="update" table="announcement" id={item.id} />
-              <Formdata type="delete" table="announcement" id={item.id} /></>
+              <><FromCon type="update" table="announcement" id={item.id} data={item} />
+              <FromCon type="delete" table="announcement" id={item.id} /></>
 
           }
         </td>
@@ -136,7 +137,7 @@ const announcementsList =async ({searchParams} : {searchParams : {[key : string]
 
             role === "admin" &&   
              
-              <Formdata type="create" table="announcement"  />
+              <FromCon type="create" table="announcement"  />
 
           }
           </div>

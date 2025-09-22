@@ -64,25 +64,24 @@ const ClassForm = ({
   return (
     <form onSubmit={onsubmit} className="flex flex-col gap-8">
       <h1 className="text-xl font-semibold">
-        {type === "create" ? "Create a subject" : "Update a subject"}
+        {type === "create" ? "Create a class" : "Update a class"}
       </h1>
 
       {/* Hidden ID for Update */}
      {type === "update" && (
   <input type="hidden" {...register("id")} defaultValue={data?.id} />
 )}
-      {/* Subject Name */}
-      <div className="flex justify-between items-center gap-2 flex-wrap">
+    <div className=" flex flex-wrap gap-5 justify-between items-center" >
+     
         <InputField
-          type="text"
+          type="text" 
           label="Class Name"
           register={register}
           name="name"
           error={errors.name}
           defaultValue={data?.name}
         />
-      </div>
-       <div className="flex justify-between items-center gap-2 flex-wrap">
+     
         <InputField
           type="text"
           label="Capcity"
@@ -91,7 +90,7 @@ const ClassForm = ({
           error={errors.capacity}
           defaultValue={data?.capacity}
         />
-      </div>
+     
 
       {/* Teachers Multiple Select */}
       <div className="flex flex-col gap-2 w-full md:w-1/4">
@@ -137,6 +136,7 @@ const ClassForm = ({
 
           
         </select>
+        </div>
         {errors.gradeId?.message && (
           <p className="text-sm text-red-500">
             {errors.gradeId.message.toString()}

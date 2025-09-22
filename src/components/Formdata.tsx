@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { FormModel } from "./FromCon";
+//import announcementForm from "./Forms/AnnouncementFrom";
 //import AssignmentForm from "./Forms/AssignmentForm";
 
 
@@ -53,8 +54,12 @@ const AssignmentFrom  = dynamic(()=>import( "./Forms/AssignmentForm") ,{
   </h1>
 })
 
+const AnnouncementFrom  = dynamic(()=>import("./Forms/AnnouncementFrom") ,{
+    loading :()=> <h1>
+    loading...
+  </h1>
+})
 
- 
 
 const form: {
   [key: string]: (
@@ -73,6 +78,8 @@ const form: {
   exam: (type: "create" | "update", setIsOpen :React.Dispatch<React.SetStateAction<boolean>> ,data?: any , renderData? : any ) => <ExamFrom type={type}  setIsOpen={setIsOpen}    data={data}    renderData={renderData}  />,
 lesson: (type: "create" | "update", setIsOpen :React.Dispatch<React.SetStateAction<boolean>> ,data?: any , renderData? : any ) => <LessonFrom type={type}  setIsOpen={setIsOpen}    data={data}    renderData={renderData}  />,
 assignment: (type: "create" | "update", setIsOpen :React.Dispatch<React.SetStateAction<boolean>> ,data?: any , renderData? : any ) => <AssignmentFrom type={type}  setIsOpen={setIsOpen}    data={data}    renderData={renderData}  />,
+announcement: (type: "create" | "update", setIsOpen :React.Dispatch<React.SetStateAction<boolean>> ,data?: any , renderData? : any ) => <AnnouncementFrom type={type}  setIsOpen={setIsOpen}    data={data}    renderData={renderData}  />,
+
 
  
 

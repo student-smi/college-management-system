@@ -117,3 +117,31 @@ export const assignmentschema = z.object({
 })
 
 export type Assignmentschema = z.infer<typeof assignmentschema>
+
+
+export const announcementschema = z.object({
+ id : z.coerce.number().optional(),
+  title: z.string().min(1, { message: "Title is required!" }),
+  description : z.string().min(1,{message :"Description is required!"}),
+   date: z.preprocess((val) => new Date(val as string), z.date({
+    message :"date is required !"
+  })),
+  classId : z.coerce.number({message:"classId is required !"}).optional()
+})
+
+export type AnnouncementSchema = z.infer<typeof announcementschema>
+
+
+export const resultschema = z.object({
+ id : z.coerce.number().optional(),
+ examId : z.coerce.number({message :"examId is required!"}),
+ classId : z.coerce.number({message :"examId is required!"}),
+ studentId :  z.coerce.number({message :"studentId is required!"}),
+ teacherId :  z.coerce.number().optional(),
+ examType : z.string().min(1,{message :"examtype is required!"}),
+ score : z.coerce.number().min(0,{message:"score must be >= 0"}).max(101,{message :"score must be <=100"})
+})
+
+export type ResultSchema = z.infer<typeof resultschema>
+
+

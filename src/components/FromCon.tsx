@@ -147,6 +147,16 @@ const FromCon =async ({
             })
              renderData = { assignment : lessonAssignment}
             break;
+         
+           case "announcement":
+            const announcementclass =await prisma.class.findMany({
+             select :{
+              id : true,
+              name : true
+             }
+            })
+              renderData = { announcementdata : announcementclass}
+           break;
 
             default:
                 break;
