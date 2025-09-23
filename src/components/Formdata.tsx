@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { FormModel } from "./FromCon";
+//import ResultForm from "";
+//import parentForm from "";
 //import announcementForm from "./Forms/AnnouncementFrom";
 //import AssignmentForm from "./Forms/AssignmentForm";
 
@@ -61,6 +63,25 @@ const AnnouncementFrom  = dynamic(()=>import("./Forms/AnnouncementFrom") ,{
 })
 
 
+const ParentFrom  = dynamic(()=>import("./Forms/ParentFrom") ,{
+    loading :()=> <h1>
+    loading...
+  </h1>
+})
+const ResultFrom  = dynamic(()=>import("./Forms/ResultFrom") ,{
+    loading :()=> <h1>
+    loading...
+  </h1>
+})
+
+
+const EventFrom  = dynamic(()=>import("./Forms/EventFrom") ,{
+    loading :()=> <h1>
+    loading...
+  </h1>
+})
+
+
 const form: {
   [key: string]: (
     type: "create" | "update",
@@ -79,9 +100,9 @@ const form: {
 lesson: (type: "create" | "update", setIsOpen :React.Dispatch<React.SetStateAction<boolean>> ,data?: any , renderData? : any ) => <LessonFrom type={type}  setIsOpen={setIsOpen}    data={data}    renderData={renderData}  />,
 assignment: (type: "create" | "update", setIsOpen :React.Dispatch<React.SetStateAction<boolean>> ,data?: any , renderData? : any ) => <AssignmentFrom type={type}  setIsOpen={setIsOpen}    data={data}    renderData={renderData}  />,
 announcement: (type: "create" | "update", setIsOpen :React.Dispatch<React.SetStateAction<boolean>> ,data?: any , renderData? : any ) => <AnnouncementFrom type={type}  setIsOpen={setIsOpen}    data={data}    renderData={renderData}  />,
-
-
- 
+parent: (type: "create" | "update", setIsOpen :React.Dispatch<React.SetStateAction<boolean>> ,data?: any , renderData? : any ) => <ParentFrom type={type}  setIsOpen={setIsOpen}    data={data}    renderData={renderData}  />,
+result: (type: "create" | "update", setIsOpen :React.Dispatch<React.SetStateAction<boolean>> ,data?: any , renderData? : any ) => <ResultFrom type={type}  setIsOpen={setIsOpen}    data={data}    renderData={renderData}  />,
+event: (type: "create" | "update", setIsOpen :React.Dispatch<React.SetStateAction<boolean>> ,data?: any , renderData? : any ) => <EventFrom type={type}  setIsOpen={setIsOpen}    data={data}    renderData={renderData}  />,
 
 }; 
 

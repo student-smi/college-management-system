@@ -2,10 +2,13 @@
 
 import { date } from "zod/v3";
 import { prisma } from "./prisma";
-import { ClassSchema, Examschema, StudentSchema, Subjectschema, TeacherSchema } from "./FromSchemaValidetion";
+import { ClassSchema, EventSchema, Examschema, StudentSchema, Subjectschema, TeacherSchema } from "./FromSchemaValidetion";
 
 // import { clerkClient } from "@clerk/nextjs/server";
 import { Clerk } from "@clerk/clerk-sdk-node";
+import { sendSMS } from "./sms";
+import { success } from "zod";
+import { error } from "console";
 
 const clerkClient = new Clerk({ secretKey: process.env.CLERK_SECRET_KEY });
 
@@ -295,7 +298,7 @@ const user = await clerkClient.users.createUser({
         name: data.name,
         surname: data.surname,
         email: data.email || null,
-        phone: data.phone  ,
+        phone: data.phone ||  "",
         address: data.address,
         img: data.img || null,
         bloodType: data.bloodType,
@@ -393,7 +396,7 @@ export async function DeleteStudent(curruntState : {success :  boolean , error :
 
 export async function CreateExam(curruntState : {success :  boolean , error : boolean} ,data: Examschema) {
  try {
-     await prisma.exam.create({
+   const exam =  await prisma.exam.create({
         data : {
              title: data.title,
         startTime: data.startTime,
@@ -402,8 +405,8 @@ export async function CreateExam(curruntState : {success :  boolean , error : bo
         }
      })
 
-   //  revalidatePath("/dashboard/list/subjects")
-     return {success : true , error :false}
+
+     return {success : true , error :false , exam}
  } catch (error) {
     console.log(error);
      return {success : false , error : true}
@@ -451,4 +454,24 @@ export async function DeleteExam(curruntState : {success :  boolean , error : bo
     console.log(error);
      return {success : false , error : true}
  }
+}
+
+
+export async function CreateEvent(curruntState : {success :  boolean , error : boolean} ,data: EventSchema) {
+   try {
+      await prisma.event.create({
+         data :{
+            title : data.title,
+            description: data.description,
+            startTime: data.startTime,
+            endTime: data.endTime,
+         }
+      })
+
+
+      return {success : true , error :false}
+   } catch (error) {
+       console.log(error);
+     return {success : false , error : true}
+   }
 }

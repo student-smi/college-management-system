@@ -1,4 +1,5 @@
 import Formdata from "@/components/Formdata";
+import FromCon from "@/components/FromCon";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
@@ -80,8 +81,8 @@ type  eventsList = Event& {class : Class}
             {
 
             role === "admin" &&   
-              <><Formdata type="update" table="event" id={item.id} />
-              <Formdata type="delete" table="event" id={item.id} /></>
+              <><FromCon type="update" table="event" id={item.id} />
+              <FromCon type="delete" table="event" id={item.id} /></>
 
           }
           </td>
@@ -169,7 +170,7 @@ query.OR = [
 
             role === "admin" &&   
            
-              <Formdata type="create" table="event"  />
+              <FromCon type="create" table="event"  />
 
           }
           </div>

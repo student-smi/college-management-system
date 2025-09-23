@@ -158,6 +158,58 @@ const FromCon =async ({
               renderData = { announcementdata : announcementclass}
            break;
 
+           case "parent":
+            const strudentParents = await prisma.student.findMany({
+              select:{
+                id : true,
+                name : true,
+                surname : true
+              }
+            })
+             renderData = { parents : strudentParents}
+              break;
+
+              case "result":
+                const examResult = await prisma.exam.findMany({
+                  select :{
+                    id : true,
+                    title : true
+                    
+                  }
+                })
+
+                const tracherResult = await prisma.teacher.findMany({
+                  select : {
+                    id : true,
+                    name : true,
+                    surname: true
+                  }
+                })
+                const classResult = await prisma.class.findMany({
+                  select : {
+                    id : true,
+                    name : true
+                  }
+                })
+                const studentResult = await prisma.student.findMany({
+                  select :{
+                    id : true,
+                    name : true,
+                    surname : true
+                  }
+                })
+              renderData = {exam : examResult , teacher : tracherResult , classs : classResult , student : studentResult}
+                break
+
+                case "event":
+                 const  classEvent = await prisma.class.findMany({
+                  select :{
+                     id : true,
+                     name : true
+                  }
+                 })
+                 renderData = { event : classEvent}
+                 break;
             default:
                 break;
         }

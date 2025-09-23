@@ -1,4 +1,5 @@
 import Formdata from "@/components/Formdata";
+import FromCon from "@/components/FromCon";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
@@ -83,8 +84,8 @@ let cloumn = [
              {
 
             role === "admin" &&   
-              <><Formdata type="update" table="parent" id={item.id} />
-              <Formdata type="delete" table="parent" id={item.id} /></>
+              <><FromCon type="update" table="parent" id={item.id}  data={item}/>
+              <FromCon type="delete" table="parent" id={item.id} /></>
 
           }
           </td>
@@ -154,7 +155,7 @@ const parentList =async ({searchParams} : {searchParams : { [key : string] : str
 
             role === "admin" &&   
               
-              <Formdata type="create" table="parent" />
+              <FromCon type="create" table="parent" />
 
           }
           </div>

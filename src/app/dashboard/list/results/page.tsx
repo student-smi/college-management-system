@@ -1,4 +1,5 @@
 import Formdata from "@/components/Formdata";
+import FromCon from "@/components/FromCon";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
@@ -101,8 +102,8 @@ type results = {
           {
 
             role === "admin" &&   
-              <><Formdata type="update" table="result" id={item.id} />
-              <Formdata type="delete" table="result" id={item.id} /></>
+              <><FromCon type="update" table="result" id={item.id} />
+              <FromCon type="delete" table="result" id={item.id} /></>
 
           }
         </td>
@@ -131,7 +132,7 @@ const resultsList =async () => {
               <Image src="/sort.png" alt="" width={14} height={14} />
             </button>
             {
-              role == "admin" &&  <Formdata type="create" table="result" ></Formdata>
+              role == "admin" &&  <FromCon type="create" table="result" ></FromCon>
             }
             {/* <button className=" rounded-full p-2 bg-lamaYellow  ">
               <Image src="/plus.png" alt="" width={14} height={14} />
