@@ -198,6 +198,8 @@ const FromCon =async ({
                     surname : true
                   }
                 })
+            
+                
               renderData = {exam : examResult , teacher : tracherResult , classs : classResult , student : studentResult}
                 break
 

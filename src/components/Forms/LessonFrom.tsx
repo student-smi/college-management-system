@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { examschema, Examschema, lessonschema, Lessonschema, subjectschema, Subjectschema } from "@/lib/FromSchemaValidetion";
 //import { subjectschema, Subjectschema } from "@/lib/subjectschema";
-import { CreateExam, CreateSubject, UpdateExam, UpdateSubject } from "@/lib/actions"; // apne actions ka path check kar lena
+import { CreateExam, CreateLesson, CreateSubject, UpdateExam, UpdateLesson, UpdateSubject } from "@/lib/actions"; // apne actions ka path check kar lena
 import InputField from "../InputField"; // apna custom input component
 import { toast } from "react-toastify";
 import { error } from "console";
@@ -34,7 +34,7 @@ const LessonForm = ({
   });
   const [isPending, startTransition] = useTransition();
   const [state, formAction] = React.useActionState(
-    type === "create" ? CreateExam : UpdateExam,
+    type === "create" ? CreateLesson : UpdateLesson,
     {
       success: false,
       error: false,
@@ -79,7 +79,7 @@ const LessonForm = ({
           register={register}
           name="title"
           error={errors.title}
-          defaultValue={data?.title}
+          defaultValue={data?.title || data?.name}
         />
      <div>
     <label className="text-xs text-gray-500">Day</label>

@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { examschema, Examschema, lessonschema, Lessonschema, resultschema, ResultSchema, subjectschema, Subjectschema } from "@/lib/FromSchemaValidetion";
 //import { subjectschema, Subjectschema } from "@/lib/subjectschema";
-import { CreateExam, CreateSubject, UpdateExam, UpdateSubject } from "@/lib/actions"; // apne actions ka path check kar lena
+import { CreateExam, CreateResult, CreateSubject, UpdateExam, UpdateResult, UpdateSubject } from "@/lib/actions"; // apne actions ka path check kar lena
 import InputField from "../InputField"; // apna custom input component
 import { toast } from "react-toastify";
 import { error } from "console";
@@ -34,7 +34,7 @@ const ResultForm = ({
   });
   const [isPending, startTransition] = useTransition();
   const [state, formAction] = React.useActionState(
-    type === "create" ? CreateExam : UpdateExam,
+    type === "create" ? CreateResult : UpdateResult,
     {
       success: false,
       error: false,
@@ -62,6 +62,7 @@ const ResultForm = ({
   // ✅ safe guard
   const { classs , teacher, student , exam } = renderData
 
+ 
   return (
     <form onSubmit={onsubmit} className="flex flex-col gap-8">
       <h1 className="text-xl font-semibold">
@@ -74,7 +75,7 @@ const ResultForm = ({
       {/* Subject Name */}
       <div className="flex justify-between items-center gap-2 flex-wrap">
        
-  
+{/*   
             <div className="flex flex-col gap-2 w-full md:w-1/4">
         <label className="text-xs text-gray-500">exam</label>
         <select
@@ -84,7 +85,7 @@ const ResultForm = ({
           className="w-full text-sm rounded-md p-2 ring-1 ring-gray-400 focus:outline-none"
         >
           {exam?.map(
-            (sub : { id: string; name: string; }) => (
+            (sub : { id: number; name: string; }) => (
               <option value={sub.id} key={sub.id}>
                 {sub.name} 
               </option>
@@ -98,7 +99,25 @@ const ResultForm = ({
             {errors.examId.message.toString()}
           </p>
         )}
-      </div>
+      </div> */}
+<div className="flex flex-col gap-2 w-full md:w-1/4">
+  <label className="text-xs text-gray-500">Exam</label>
+  <select
+    {...register("examId")}
+    defaultValue={data?.examId?.toString() || ""}
+    className="w-full text-sm rounded-md p-2 ring-1 ring-gray-400 focus:outline-none"
+  >
+    <option value="">-- None --</option>
+    {exam?.map((sub: { id: number; title: string }) => (
+      <option value={sub.id.toString()} key={sub.id}>
+        {sub.title}
+      </option>
+    ))}
+  </select>
+  {errors.examId?.message && (
+    <p className="text-sm text-red-500">{errors.examId.message}</p>
+  )}
+</div>
 
      
 
@@ -108,7 +127,7 @@ const ResultForm = ({
         <select
           {...register("classId")}
           defaultValue={data?.classId}
-          multiple
+         
           className="w-full text-sm rounded-md p-2 ring-1 ring-gray-400 focus:outline-none"
         >
           {classs?.map(
@@ -134,7 +153,7 @@ const ResultForm = ({
         <select
           {...register("teacherId")}
           defaultValue={data?.teacherId}
-          multiple
+        
           className="w-full text-sm rounded-md p-2 ring-1 ring-gray-400 focus:outline-none"
         >
           {teacher?.map(
@@ -185,7 +204,7 @@ const ResultForm = ({
         <select
           {...register("examType")}
           defaultValue={data?.examType}
-          multiple
+         
           className="w-full text-sm rounded-md p-2 ring-1 ring-gray-400 focus:outline-none"
         >
          
@@ -200,7 +219,7 @@ const ResultForm = ({
         </select>
         {errors.examType?.message && (
           <p className="text-sm text-red-500">
-            {errors.examType.message.toString()}
+            {errors.examType?.message.toString()}
           </p>
         )}
       </div>

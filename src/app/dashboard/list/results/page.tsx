@@ -8,7 +8,10 @@ import {
   resultsData
  
 } from "@/lib/data";
+import { ITEM_PER_PAGE } from "@/lib/Item_per_page";
+import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { Prisma } from "@prisma/client";
 import { strict } from "assert";
 import Image from "next/image";
 import Link from "next/link";
@@ -42,11 +45,7 @@ let cloumn = [
     accesor: "Date",
     className: " hidden md:table-cell",
   },
-  {
-    header: "Type",
-    accesor: "type",
-    className: " hidden md:table-cell",
-  },
+ 
   {
     header: "Score",
     accesor: "score",
@@ -59,18 +58,29 @@ let cloumn = [
   },
 ];
 
-type results = {
-  id: number;
+// type results = {
+//   id: number;
 
-  subject: string;
-  class: number;
-  teacher: string;
-  student: string;
-  date: string;
-  type: string;
+//   subject: string;
+//   class: number;
+//   teacher: string;
+//   student: string;
+//   date: string;
+//   type: "exam" | "assigment";
+//   score: number;
+// };
+type ResultList = {
+  id: number;
+  title: string;
+  studentName: string;
+  studentSurname: string;
+  teacherName: string;
+  teacherSurname: string;
   score: number;
+  className: string;
+  startTime: Date;
 };
- const reanderRow =async (item: results) => {
+ const reanderRow =async (item: ResultList) => {
   const { sessionClaims } = await auth();
   
   const role = (sessionClaims?.metadata as { role?: string })?.role;
@@ -79,13 +89,13 @@ type results = {
         key={item.id}
         className="  even:bg-slate-100 gap-4  border-b  border-gray-200 hover:bg-lamaPurpleLight"
       >
-        <td className=" ">{item.subject}</td>
+        <td className=" ">{item.title}</td>
 
-        <td>{item.class}</td>
-        <td className="  text-sm  hidden   md:table-cell">{item.teacher}</td>
-        <td className="  text-sm  hidden   md:table-cell">{item.student}</td>
-        <td className="  text-sm  hidden   md:table-cell">{item.date}</td>
-        <td className="  text-sm  hidden   md:table-cell">{item.type}</td>
+       
+        <td className="  text-sm  hidden   md:table-cell">{item.teacherName + " " + item.teacherSurname}</td>
+        <td className="  text-sm  hidden   md:table-cell">{item.studentName + " " + item.studentSurname}</td>
+        <td className="  text-sm  hidden   md:table-cell"> {new Intl.DateTimeFormat("en-US").format(item.startTime)}</td>
+        <td className="  text-sm  hidden   md:table-cell">{item.className}</td>
         <td className="  text-sm  hidden   md:table-cell">{item.score}</td>
 
         <td className=" flex  justify-center items-center gap-2  text-sm">
@@ -102,7 +112,7 @@ type results = {
           {
 
             role === "admin" &&   
-              <><FromCon type="update" table="result" id={item.id} />
+              <><FromCon type="update" table="result" id={item.id} data={item} />
               <FromCon type="delete" table="result" id={item.id} /></>
 
           }
@@ -110,12 +120,89 @@ type results = {
       </tr>
     );
   };
-const resultsList =async () => {
+const resultsList =async ({searchParams} : {searchParams : { [key : string] : string | undefined}}) => {
   const { sessionClaims } = await auth();
   
   const role = (sessionClaims?.metadata as { role?: string })?.role;
-
  
+      const {page , ...queryParams} = searchParams
+   let p = page ? parseInt(page) : 1
+
+ const  query: Prisma.ResultWhereInput =  {} 
+
+    if(queryParams){
+      for(const [key ,value] of Object.entries(queryParams)){
+        if(value){
+          switch (key) {
+           case "studentId":
+            query.studentId = value
+            break
+
+          case "search" :
+            query.OR =[
+              {exam : {title :{contains :value , mode : "insensitive"}}},
+              {student : {name :{contains :value , mode :"insensitive"}}}
+            ]
+
+          } 
+           
+        }
+      }
+    }
+
+  let [dataRes , count]= await prisma.$transaction([
+    prisma.result.findMany({
+      where :query,
+    include: {
+     student : {select :{ name : true , surname : true}},
+     exam :{
+      include :{
+        lesson :{
+          include:{
+             teacher :{select :{ name : true , surname : true}},
+             class : {select : {name:true}}
+          }
+        }
+      }
+     },
+     assignment :{
+      include :{
+        lesson :{
+          include:{
+             teacher :{select :{ name : true , surname : true}},
+             class : {select : {name:true}}
+          }
+        }
+      }
+     }
+    },
+
+    take : ITEM_PER_PAGE,
+    skip : ITEM_PER_PAGE * (p - 1) 
+  }),
+    prisma.result.count({where: query})
+  ]) 
+ 
+     const data = dataRes.map((item) => {
+    const assessment = item.exam || item.assignment;
+
+    if (!assessment) return null;
+
+    const isExam = "startTime" in assessment;
+
+    return {
+      id: item.id,
+      title: assessment.title,
+      studentName: item.student.name,
+      studentSurname: item.student.surname,
+      teacherName: assessment.lesson.teacher.name,
+      teacherSurname: assessment.lesson.teacher.surname,
+      score: item.score,
+      
+      className: assessment.lesson.class.name,
+      startTime: isExam ? assessment.startTime : assessment.startDate,
+    };
+  });        
 
   return (
     <div className=" flex-1 items-center rounded-md bg-white m-4 ">
@@ -142,11 +229,11 @@ const resultsList =async () => {
       </div>
       {/* list of techaer */}
       <div>
-        <Table cloumn={cloumn} reanderRow={reanderRow} data={resultsData} />
+        <Table cloumn={cloumn} reanderRow={reanderRow} data={data} />
       </div>
       {/* footer */}
       <div>
-        <Pagination  />
+        <Pagination page={p} count={count}  />
       </div>
     </div>
   );

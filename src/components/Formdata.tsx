@@ -3,7 +3,7 @@
 
 
 "use client";
-import { DeleteClass, DeleteExam, DeleteStudent, DeleteSubject, DeleteTeahcher } from "@/lib/actions";
+import { DeleteAnnouncement, DeleteAssignment, DeleteClass, DeleteEvent, DeleteExam, DeleteLesson, DeleteResult, DeleteStudent, DeleteSubject, DeleteTeahcher } from "@/lib/actions";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -114,13 +114,13 @@ const deleteActionMap  = {
   student: DeleteStudent,
   exam: DeleteExam,
 // // TODO: OTHER DELETE ACTIONS
-//   parent: deleteSubject,
-//   lesson: deleteSubject,
-//   assignment: deleteSubject,
-//   result: deleteSubject,
+//  parent: deleteSubject,
+   lesson: DeleteLesson,
+  assignment: DeleteAssignment,
+  result: DeleteResult,
 //   attendance: deleteSubject,
-//   event: deleteSubject,
-//   announcement: deleteSubject,
+  event: DeleteEvent,
+ announcement: DeleteAnnouncement,
 };
 
 const Formdata = ({

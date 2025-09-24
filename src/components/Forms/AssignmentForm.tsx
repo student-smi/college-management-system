@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { assignmentschema, Assignmentschema, examschema, Examschema, subjectschema, Subjectschema } from "@/lib/FromSchemaValidetion";
 //import { subjectschema, Subjectschema } from "@/lib/subjectschema";
-import { CreateExam, CreateSubject, UpdateExam, UpdateSubject } from "@/lib/actions"; // apne actions ka path check kar lena
+import { CreateAssignment, CreateExam, CreateSubject, UpdateAssignment, UpdateExam, UpdateSubject } from "@/lib/actions"; // apne actions ka path check kar lena
 import InputField from "../InputField"; // apna custom input component
 import { toast } from "react-toastify";
 
@@ -33,7 +33,7 @@ const AssignmentForm = ({
   });
   const [isPending, startTransition] = useTransition();
   const [state, formAction] = React.useActionState(
-    type === "create" ? CreateExam : UpdateExam,
+    type === "create" ? CreateAssignment : UpdateAssignment,
     {
       success: false,
       error: false,

@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { announcementschema, AnnouncementSchema, examschema, Examschema, lessonschema, Lessonschema, subjectschema, Subjectschema } from "@/lib/FromSchemaValidetion";
 //import { subjectschema, Subjectschema } from "@/lib/subjectschema";
-import { CreateExam, CreateSubject, UpdateExam, UpdateSubject } from "@/lib/actions"; // apne actions ka path check kar lena
+import { CreateAnnouncement, CreateExam, CreateSubject, UpdateAnnouncement, UpdateExam, UpdateSubject } from "@/lib/actions"; // apne actions ka path check kar lena
 import InputField from "../InputField"; // apna custom input component
 import { toast } from "react-toastify";
 
@@ -34,7 +34,7 @@ const announcementForm = ({
   });
   const [isPending, startTransition] = useTransition();
   const [state, formAction] = React.useActionState(
-    type === "create" ? CreateExam : UpdateExam,
+    type === "create" ?  CreateAnnouncement : UpdateAnnouncement,
     {
       success: false,
       error: false,
@@ -102,7 +102,7 @@ const announcementForm = ({
           register={register}
           name="date"
           error={errors.date}
-          defaultValue={data?.date}
+          defaultValue={data?.date.toISOString().split("T")[0]}
         />
 
         

@@ -98,8 +98,10 @@ export const lessonschema = z.object({
   day: z.enum(["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"], {
     message: "Day is required"
   }),
-  startTime: z.coerce.date({ message: "Start time is required!" }),
-  endTime: z.coerce.date({ message: "End time is required!" }),
+  // startTime: z.coerce.date({ message: "Start time is required!" }),
+  // endTime: z.coerce.date({ message: "End time is required!" }),
+   startTime: z.string().min(1, { message: "Start time is required!" }),
+  endTime: z.string().min(1, { message: "End time is required!" }),
   subjectId: z.coerce.number({ message: "subjectId is required!" }),
   teacherId: z.coerce.string({ message: "teacherId is required!" }),
   classId: z.coerce.number({ message: "classId is required!" }),
@@ -133,13 +135,15 @@ export type AnnouncementSchema = z.infer<typeof announcementschema>
 
 
 export const resultschema = z.object({
- id : z.coerce.number().optional(),
- examId : z.coerce.number({message :"examId is required!"}),
- classId : z.coerce.number({message :"examId is required!"}),
- studentId :  z.coerce.number({message :"studentId is required!"}),
- teacherId :  z.coerce.number().optional(),
- examType : z.string().min(1,{message :"examtype is required!"}),
- score : z.coerce.number().min(0,{message:"score must be >= 0"}).max(101,{message :"score must be <=100"})
+  id: z.coerce.number().optional(),
+  examId: z.coerce.number({ message: "examId is required!" }),
+  studentId: z.string({ message: "studentId is required!" }), // ✅ String
+  examType: z.string().min(1, { message: "examtype is required!" }).optional(),
+  score: z.coerce.number()
+    .min(0, { message: "score must be >= 0" })
+    .max(100, { message: "score must be <= 100" }), 
+  classId :z.string({ message: "classId is required!" }).optional(), 
+  teacherId : z.string({ message: "teacherId is required!" }).optional(), 
 })
 
 export type ResultSchema = z.infer<typeof resultschema>
@@ -171,11 +175,10 @@ export const parentSchema = z.object({
 export type ParentSchema = z.infer<typeof parentSchema>;
  
 export const eventSchema = z.object({
-  
+  id : z.coerce.number().optional(),
   title: z.string().min(3, "Title is required"),
   description: z.string().min(5, "Description is required"),
-  // startTime: z.string().nonempty("Start time is required"),
-  // endTime: z.string().nonempty("End time is required"),
+ 
     startTime : z.coerce.date({message : "start date is requird ! "}),
    endTime : z.coerce.date({message : "end date is requird ! "}),
   classId: z.string().nonempty("Class is required"),

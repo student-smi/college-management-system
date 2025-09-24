@@ -81,7 +81,7 @@ type  eventsList = Event& {class : Class}
             {
 
             role === "admin" &&   
-              <><FromCon type="update" table="event" id={item.id} />
+              <><FromCon type="update" table="event" id={item.id} data={item} />
               <FromCon type="delete" table="event" id={item.id} /></>
 
           }

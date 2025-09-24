@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { announcementschema, AnnouncementSchema, eventSchema, EventSchema, examschema, Examschema, lessonschema, Lessonschema, subjectschema, Subjectschema } from "@/lib/FromSchemaValidetion";
 //import { subjectschema, Subjectschema } from "@/lib/subjectschema";
-import { CreateEvent, CreateExam, CreateSubject, UpdateExam, UpdateSubject } from "@/lib/actions"; // apne actions ka path check kar lena
+import { CreateEvent, CreateExam, CreateSubject, UpdateEvent, UpdateExam, UpdateSubject } from "@/lib/actions"; // apne actions ka path check kar lena
 import InputField from "../InputField"; // apna custom input component
 import { toast } from "react-toastify";
 
@@ -34,7 +34,7 @@ const  EventForm = ({
   });
   const [isPending, startTransition] = useTransition();
   const [state, formAction] = React.useActionState(
-    type === "create" ? CreateEvent : UpdateExam,
+    type === "create" ? CreateEvent : UpdateEvent,
     {
       success: false,
       error: false,
@@ -95,7 +95,7 @@ const  EventForm = ({
           register={register}
           name="startTime"
           error={errors.startTime}
-          defaultValue={data?.startTime}
+          defaultValue={data?.startTime.toISOString().split("T")[0]}
         />
   <InputField
           type="Date"
@@ -103,7 +103,7 @@ const  EventForm = ({
           register={register}
           name="endTime"
           error={errors.endTime}
-          defaultValue={data?.endTime}
+          defaultValue={data?.endTime.toISOString().split("T")[0]}
         />
         
       <div className="flex flex-col gap-2 w-full md:w-1/4 ">
@@ -116,7 +116,7 @@ const  EventForm = ({
         >
           {event?.map(
             (sub : { id: number; name: string; }) => (
-              <option value={sub.id} key={sub.id}>
+              <option value={sub.id} key={sub.id} >
                 {sub.name}
               </option>
             )
