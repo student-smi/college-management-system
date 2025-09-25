@@ -6,6 +6,7 @@ import React from 'react'
 const Navbar =async () => {
   let user = await currentUser()
     let role = user?.publicMetadata?.role as string
+    console.log(user?._raw?.username);
     
   return (
     <div className='  flex items-center justify-between m-2'>
@@ -20,7 +21,7 @@ const Navbar =async () => {
              <div className=' h-4 w-4  ml-4 mt-1 text-white  bg-purple-500 text-xs rounded-full text-center absolute  -top-left-2  -top-3 -top-right-2'>1</div>
         </div>
         <div className=' flex flex-col '>
-           <p className=' text-xs   '>Smit bhai</p>
+           <p className=' text-xs   '>{user?._raw?.username}</p>
            <p className=' text-[12px] text-right text-gray-500 font-light'>{role}</p>
         </div>
         <UserButton />

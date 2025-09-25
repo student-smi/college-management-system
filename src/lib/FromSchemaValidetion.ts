@@ -185,3 +185,22 @@ export const eventSchema = z.object({
 });
 
 export type EventSchema = z.infer<typeof eventSchema>;
+
+
+// export const attendanceRecordSchema = z.object({
+//   studentId: z.coerce.number(),
+//   present: z.boolean(),
+// });
+
+export const attendanceschema = z.object({
+   id: z.coerce.number().optional(),  // 👈 added for update
+     date: z.preprocess((val) => new Date(val as string), z.date({
+    message :"date is required !"
+  })),
+  
+  lessonId : z.string().min(1,{message :"lesson Id is requird !"}),
+    studentId:z.string({ message: "studentId is required!" }), 
+  present: z.boolean(),
+
+});
+export type  Attendanceschema = z.infer<typeof attendanceschema>;

@@ -158,9 +158,9 @@ const assignmentsList = async ({
       include: {
         lesson: {
           select: {
-            class: { select: { name: true } },
-            subject: { select: { name: true } },
-            teacher: { select: { name: true, surname: true } },
+            teacher :{ select :{name : true , surname :true}},
+            class : { select : {name : true}},
+            subject:{select:{name:true}}
           },
         },
       },

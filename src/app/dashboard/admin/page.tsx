@@ -7,9 +7,15 @@ import Countcontainer from '@/components/Countcontainer'
 import EventCalendarCon from '@/components/EventCalendarCon'
 import FinaceCharts from '@/components/FinaceCharts'
 import UserCard from '@/components/UserCard'
+import { auth } from '@clerk/nextjs/server'
 import React from 'react'
 
 const adminPage =async ({searchParams }: {searchParams :{[key : string] : string | undefined}}) => {
+    const { sessionClaims , userId } =await auth();
+  
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+   //console.log( "role " ,role , "session" , sessionClaims , "userid" , userId);
+   
   return (
     <div className=' flex flex-col md:flex-row'>
       {/* left */}

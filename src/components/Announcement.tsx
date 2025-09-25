@@ -7,27 +7,27 @@ import { prisma } from '@/lib/prisma';
 import { keyof } from 'zod';
 
 
-let  event = [
-    { 
-        id : 1,
-        title : " Lorem ipsum dolor ",
-        time : "12 : 00 pm - 1 : 00 pm",
-        description : " Lorem ipsum dolor sit amet consectetur adipisicing elit"
-    },
-    {
-        id : 2,
-        title : " Lorem ipsum dolor ",
-        time : "12 : 00 pm - 1 : 00 pm",
-        description : " Lorem ipsum dolor sit amet consectetur adipisicing elit"
-    },
-    {
-        id : 3,
-        title : " Lorem ipsum dolor ",
-        time : "12 : 00 pm - 1 : 00 pm",
-        description : " Lorem ipsum dolor sit amet consectetur adipisicing elit"
-    },
+// let  event = [
+//     { 
+//         id : 1,
+//         title : " Lorem ipsum dolor ",
+//         time : "12 : 00 pm - 1 : 00 pm",
+//         description : " Lorem ipsum dolor sit amet consectetur adipisicing elit"
+//     },
+//     {
+//         id : 2,
+//         title : " Lorem ipsum dolor ",
+//         time : "12 : 00 pm - 1 : 00 pm",
+//         description : " Lorem ipsum dolor sit amet consectetur adipisicing elit"
+//     },
+//     {
+//         id : 3,
+//         title : " Lorem ipsum dolor ",
+//         time : "12 : 00 pm - 1 : 00 pm",
+//         description : " Lorem ipsum dolor sit amet consectetur adipisicing elit"
+//     },
     
-]
+// ]
 const Announcement =async () => {
     const { sessionClaims , userId } =await auth();
 
@@ -61,6 +61,7 @@ const rolecondition = {
 
 const data = await prisma.announcement.findMany({
   take : 3,
+  orderBy : {date: "desc"},
   where  : {
     
     ...(role !== "admin" && {

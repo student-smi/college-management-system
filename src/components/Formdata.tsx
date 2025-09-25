@@ -3,7 +3,7 @@
 
 
 "use client";
-import { DeleteAnnouncement, DeleteAssignment, DeleteClass, DeleteEvent, DeleteExam, DeleteLesson, DeleteResult, DeleteStudent, DeleteSubject, DeleteTeahcher } from "@/lib/actions";
+import { DeleteAnnouncement, DeleteAssignment, DeleteAttendance, DeleteClass, DeleteEvent, DeleteExam, DeleteLesson, DeleteResult, DeleteStudent, DeleteSubject, DeleteTeahcher } from "@/lib/actions";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { FormModel } from "./FromCon";
+//import AttendanceForm from "./Forms/AttendanceFrom";
 //import ResultForm from "";
 //import parentForm from "";
 //import announcementForm from "./Forms/AnnouncementFrom";
@@ -81,7 +82,11 @@ const EventFrom  = dynamic(()=>import("./Forms/EventFrom") ,{
   </h1>
 })
 
-
+const AttendanceForm= dynamic(()=>import("./Forms/AttendanceFrom") ,{
+    loading :()=> <h1>
+    loading...
+  </h1>
+})
 const form: {
   [key: string]: (
     type: "create" | "update",
@@ -103,6 +108,8 @@ announcement: (type: "create" | "update", setIsOpen :React.Dispatch<React.SetSta
 parent: (type: "create" | "update", setIsOpen :React.Dispatch<React.SetStateAction<boolean>> ,data?: any , renderData? : any ) => <ParentFrom type={type}  setIsOpen={setIsOpen}    data={data}    renderData={renderData}  />,
 result: (type: "create" | "update", setIsOpen :React.Dispatch<React.SetStateAction<boolean>> ,data?: any , renderData? : any ) => <ResultFrom type={type}  setIsOpen={setIsOpen}    data={data}    renderData={renderData}  />,
 event: (type: "create" | "update", setIsOpen :React.Dispatch<React.SetStateAction<boolean>> ,data?: any , renderData? : any ) => <EventFrom type={type}  setIsOpen={setIsOpen}    data={data}    renderData={renderData}  />,
+attendance: (type: "create" | "update", setIsOpen :React.Dispatch<React.SetStateAction<boolean>> ,data?: any , renderData? : any ) => <AttendanceForm type={type}  setIsOpen={setIsOpen}    data={data}    renderData={renderData}  />,
+
 
 }; 
 
@@ -113,15 +120,16 @@ const deleteActionMap  = {
   teacher: DeleteTeahcher,
   student: DeleteStudent,
   exam: DeleteExam,
-// // TODO: OTHER DELETE ACTIONS
+
 //  parent: deleteSubject,
    lesson: DeleteLesson,
   assignment: DeleteAssignment,
   result: DeleteResult,
-//   attendance: deleteSubject,
+ attendance: DeleteAttendance,
   event: DeleteEvent,
  announcement: DeleteAnnouncement,
 };
+type TableKeys = keyof typeof form; 
 
 const Formdata = ({
   type,
@@ -129,7 +137,7 @@ const Formdata = ({
   table,
   id,
   renderData
-}: FormModel  & {renderData? : any}) => {
+}: FormModel  & {renderData? : any ; table : TableKeys}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const size = type === "create" ? "w-8 h-8" : "w-7 h-7";

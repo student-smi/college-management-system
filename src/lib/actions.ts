@@ -2,7 +2,7 @@
 
 import { date } from "zod/v3";
 import { prisma } from "./prisma";
-import { AnnouncementSchema, Assignmentschema, ClassSchema, EventSchema, Examschema, Lessonschema, ParentSchema, ResultSchema, StudentSchema, Subjectschema, TeacherSchema } from "./FromSchemaValidetion";
+import { AnnouncementSchema, Assignmentschema, Attendanceschema, ClassSchema, EventSchema, Examschema, Lessonschema, ParentSchema, ResultSchema, StudentSchema, Subjectschema, TeacherSchema } from "./FromSchemaValidetion";
 
 // import { clerkClient } from "@clerk/nextjs/server";
 import { Clerk } from "@clerk/clerk-sdk-node";
@@ -800,6 +800,88 @@ export async function DeleteResult(curruntState : {success :  boolean , error : 
       
  const id = data.get("id") as string
       await prisma.result.delete({
+         where :{
+            id : parseInt(id)
+         }
+      })
+
+      return {success : true , error : false}
+   } catch (error) {
+        console.log(error);
+     return {success : false , error : true}
+   }
+}
+
+
+// export async function CreateAttendace(curruntState : {success :  boolean , error : boolean} ,data: Attendanceschema) {
+//    try {
+//       await prisma.attendance.create({
+//          data :{
+//          date : data.date,
+//           lessonId : data.lessonId,
+//           studentId : data.records,
+//           present : data.records,
+
+//          }
+//       })
+
+
+//       return {success : true , error :false}
+//    } catch (error) {
+//        console.log(error);
+//      return {success : false , error : true}
+//    }
+// }
+export async function CreateAttendance(
+  curruntState: { success: boolean; error: boolean },
+  data: Attendanceschema
+) {
+  try {
+   await prisma.attendance.create({
+        data: {
+        date: data.date,
+        lessonId: parseInt(data.lessonId),
+        studentId: data.studentId.toString(),
+        present: data.present,
+      },
+   })
+
+    return { success: true, error: false };
+  } catch (error) {
+    console.log(error);
+    return { success: false, error: true };
+  }
+}
+
+
+
+export async function UpdateAttendance(curruntState : {success :  boolean , error : boolean} ,data: Attendanceschema) {
+    try {
+      
+      await prisma.attendance.update({
+         where :{
+             id  : data.id
+         }, 
+        data :{
+         date : data.date,
+         lessonId : parseInt(data.lessonId),
+         studentId : data.studentId.toString(),
+         present : data.present
+        }
+      })
+      return {success : true , error : false}
+    } catch (error) {
+        console.log(error);
+     return {success : false , error : true}
+    }
+}
+
+
+export async function DeleteAttendance(curruntState : {success :  boolean , error : boolean} ,data: FormData) {
+   try {
+      
+ const id = data.get("id") as string
+      await prisma.attendance.delete({
          where :{
             id : parseInt(id)
          }
