@@ -59,7 +59,7 @@ type  lessonslist = Lesson & {teacher : Teacher} & {subject : Subject} & {class 
           <td >
             {item.class.name}
           </td>
-          <td className="  text-sm  hidden   md:table-cell">{item.teacher.name + " " + item.teacher.name}</td>
+          <td className="  text-sm  hidden   md:table-cell">{item.teacher.name + " " + item.teacher.surname}</td>
         
          
           
@@ -137,7 +137,7 @@ const lessonsList =async ({searchParams} : {searchParams : { [key : string] :str
       include: {
         subject :{select : {name : true}},
         class :{select : {name : true}},
-        teacher :{select : {name : true}}
+        teacher :{select : {name : true , surname : true}}
 
 
 

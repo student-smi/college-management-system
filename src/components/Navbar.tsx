@@ -24,7 +24,7 @@ const Navbar =async () => {
            <p className=' text-xs   '>{user?._raw?.username}</p>
            <p className=' text-[12px] text-right text-gray-500 font-light'>{role}</p>
         </div>
-        <UserButton />
+        <UserButton  signOutUrl="/"  />
           {/* <Image src="/avatar.png" width={30} height={30} alt='' className=' rounded-full'/> */}
        
       </div>

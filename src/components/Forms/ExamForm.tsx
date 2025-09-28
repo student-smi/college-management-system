@@ -59,7 +59,7 @@ const ExamForm = ({
   }, [state.success , router]);
 
   // ✅ safe guard
-  const {lessons}= renderData
+  const {lessons , class:classname}= renderData
 
   return (
     <form onSubmit={onsubmit} className="flex flex-col gap-8">
@@ -97,10 +97,33 @@ const ExamForm = ({
           defaultValue={data?.endTime}
         />
       </div>
+ {/* <div className="flex flex-col gap-2 w-full md:w-1/4">
+        <label className="text-xs text-gray-500">Class name</label>
+        <select
+          {...register("classId")}
+          defaultValue={data?.classId}
+ 
+          className="w-full text-sm rounded-md p-2 ring-1 ring-gray-400 focus:outline-none"
+        >
+          {classname?.map(
+            (teacher: { id: number; name: string; }) => (
+              <option value={teacher.id} key={teacher.id}>
+                {teacher.name}
+              </option>
+            )
+          )}
 
+          
+        </select>
+        {errors.classId?.message && (
+          <p className="text-sm text-red-500">
+            {errors.classId.message.toString()}
+          </p>
+        )}
+      </div> */}
       {/* Teachers Multiple Select */}
       <div className="flex flex-col gap-2 w-full md:w-1/4">
-        <label className="text-xs text-gray-500">Teachers</label>
+        <label className="text-xs text-gray-500">Lesson name</label>
         <select
           {...register("lessonId")}
           defaultValue={data?.lessonId}
@@ -123,6 +146,8 @@ const ExamForm = ({
           </p>
         )}
       </div>
+
+
 
       {/* Error */}
       {state.error && (

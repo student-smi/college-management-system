@@ -60,7 +60,8 @@ const ResultForm = ({
   }, [state.success , router]);
 
   // ✅ safe guard
-  const { classs , teacher, student , exam } = renderData
+  const { classs , teacher, student , exam  , assignment}
+   = renderData
 
  
   return (
@@ -123,55 +124,32 @@ const ResultForm = ({
 
 
          <div className="flex flex-col gap-2 w-full md:w-1/4">
-        <label className="text-xs text-gray-500">Class name</label>
+        <label className="text-xs text-gray-500">Assignment name</label>
         <select
-          {...register("classId")}
-          defaultValue={data?.classId}
+          {...register("assignmentId")}
+          defaultValue={data?.assignmentId}
          
           className="w-full text-sm rounded-md p-2 ring-1 ring-gray-400 focus:outline-none"
         >
-          {classs?.map(
-            (sub : { id: number; name: string; }) => (
+          {assignment?.map(
+            (sub : { id: number; title: string; }) => (
               <option value={sub.id} key={sub.id}>
-                {sub.name} 
+                {sub.title} 
               </option>
             )
           )}
 
       
         </select>
-        {errors.classId?.message && (
+        {errors.assignmentId?.message && (
           <p className="text-sm text-red-500">
-            {errors.classId.message.toString()}
+            {errors.assignmentId.message.toString()}
           </p>
         )}
       </div>
 
 
-             <div className="flex flex-col gap-2 w-full md:w-1/4">
-        <label className="text-xs text-gray-500">Teacher</label>
-        <select
-          {...register("teacherId")}
-          defaultValue={data?.teacherId}
-        
-          className="w-full text-sm rounded-md p-2 ring-1 ring-gray-400 focus:outline-none"
-        >
-          {teacher?.map(
-            (sub : { id: string; name: string; surname : string}) => (
-              <option value={sub.id} key={sub.id}>
-                {sub.name} {sub.surname}
-              </option>
-            )
-          )}
-
-          
-        </select>
-        {errors.teacherId?.message && (
-          <p className="text-sm text-red-500">
-            {errors.teacherId.message.toString()}
-          </p>
-        )}
-      </div>
+      
 
             <div className="flex flex-col gap-2 w-full md:w-1/4">
         <label className="text-xs text-gray-500">Student name</label>

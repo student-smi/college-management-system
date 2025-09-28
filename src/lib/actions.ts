@@ -5,15 +5,19 @@ import { prisma } from "./prisma";
 import { AnnouncementSchema, Assignmentschema, Attendanceschema, ClassSchema, EventSchema, Examschema, Lessonschema, ParentSchema, ResultSchema, StudentSchema, Subjectschema, TeacherSchema } from "./FromSchemaValidetion";
 
 // import { clerkClient } from "@clerk/nextjs/server";
-import { Clerk } from "@clerk/clerk-sdk-node";
+import { clerkClient } from "@clerk/clerk-sdk-node";
 import { sendSMS } from "./sms";
 import { success } from "zod";
 import { error } from "console";
 import { Erica_One } from "next/font/google";
+import twilio from "twilio";
 
-const clerkClient = new Clerk({ secretKey: process.env.CLERK_SECRET_KEY });
+const client = twilio(process.env.TWILIO_ACCOUNT_SID!, process.env.TWILIO_AUTH_TOKEN!);
 
+// const clerkClient = new ClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
+// import { clerkClient } from "@clerk/clerk-sdk-node";
 
+const customClerkClient = clerkClient;
 //import { id } from "zod/locales";
 
 // export const async function CreateSubject(data:Subjectschema) {
@@ -134,7 +138,7 @@ export async function DeleteClass(curruntState : {success :  boolean , error : b
      return {success : false , error : true}
  }
 }
-console.log(clerkClient);
+console.log(customClerkClient);
 
 
 export async function  CreateTeacher(curruntState : {success :  boolean , error : boolean} ,data:  TeacherSchema) {
@@ -307,7 +311,7 @@ const user = await clerkClient.users.createUser({
         birthday: data.birthday,
         gradeId : data.gradeId,
         classId : data.classId,
-        parentId : data.parentId  
+        ...(data.parentId ? { parentId: data.parentId } : {}), // ✅ Only if valid
       }
      })
 
@@ -403,10 +407,35 @@ export async function CreateExam(curruntState : {success :  boolean , error : bo
         startTime: data.startTime,
         endTime: data.endTime,
         lessonId: data.lessonId,
-        }
+      
+        },
+         include: {
+        lesson: {
+          include: {
+            class: {
+              include: {
+                students: true, // 👈 sab students fetch karo
+              },
+            },
+          },
+        },
+      },
      })
 
+   
+ const students = exam.lesson.class.students;
 
+  try {
+      const msg = await client.messages.create({
+        body: `📢  Exam "${exam.title}" scheduled from ${exam.startTime} to ${exam.endTime}.`,
+        from: process.env.TWILIO_PHONE!, // Twilio number
+        to: "+919023401172", // 👈 test number
+      });
+
+      console.log(`✅ Test SMS sent: ${msg.sid}`);
+    } catch (err) {
+      console.error("❌ Failed to send test SMS:", err);
+    }
      return {success : true , error :false , exam}
  } catch (error) {
     console.log(error);
@@ -428,6 +457,7 @@ export async function UpdateExam(curruntState : {success :  boolean , error : bo
         startTime: data.startTime,
         endTime: data.endTime,
         lessonId: data.lessonId,
+        
         }
      })
 
@@ -442,7 +472,7 @@ export async function UpdateExam(curruntState : {success :  boolean , error : bo
 export async function DeleteExam(curruntState : {success :  boolean , error : boolean} ,data: FormData) {
     const id = data.get("id") as string
  try {
-     await prisma.subject.delete({
+     await prisma.exam.delete({
         where :{
            id :  parseInt(id)
         },
@@ -759,7 +789,7 @@ export async function CreateResult(curruntState : {success :  boolean , error : 
          data :{
             score: data.score,
         examId: data.examId || null,
-       
+       assignmentId : data.assignmentId ? parseInt(data.assignmentId) : null,
         studentId: data.studentId,
          }
       })
@@ -783,7 +813,7 @@ export async function UpdateResult(curruntState : {success :  boolean , error : 
         data :{
                  score: data.score,
         examId: data.examId || null,
-       
+        assignmentId : data.assignmentId ? parseInt(data.assignmentId) : null,
         studentId: data.studentId,
         }
       })

@@ -9,6 +9,28 @@ import { useEffect } from 'react'
 
 
 
+function LoginSkeleton() {
+  return (
+    <div className="h-screen w-screen flex justify-center items-center bg-lamaSkyLight animate-pulse">
+      <div className="bg-white rounded-lg drop-shadow-2xl flex flex-col gap-6 p-12 w-80">
+        <div className="flex items-center gap-4">
+          <div className="w-8 h-8 bg-gray-300 rounded-full" />
+          <div className="w-48 h-6 bg-gray-300 rounded-md" />
+        </div>
+        <div className="w-64 h-4 bg-gray-300 rounded-md" />
+        <div className="flex flex-col gap-2">
+          <div className="w-20 h-4 bg-gray-300 rounded-md" />
+          <div className="w-full h-10 bg-gray-200 rounded-md" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <div className="w-20 h-4 bg-gray-300 rounded-md" />
+          <div className="w-full h-10 bg-gray-200 rounded-md" />
+        </div>
+        <div className="w-full h-10 bg-gray-300 rounded-md mt-2" />
+      </div>
+    </div>
+  );
+}
 
 
 
@@ -24,6 +46,8 @@ export default function Page() {
     router.push(`/dashboard/${role}`)
  }
 },[user ,router , isLoaded])
+
+  if (!isLoaded) return <LoginSkeleton />;
   return <div className=' h-screen w-screen flex justify-center items-center  bg-lamaSkyLight'>
      <SignIn.Root>
        <SignIn.Step name='start' className=' bg-white  rounded-lg  drop-shadow-2xl flex flex-col gap-3 p-12 '>

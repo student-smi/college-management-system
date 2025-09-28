@@ -3,6 +3,7 @@ import FromCon from "@/components/FromCon";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
+//import TableSkeleton from "@/components/TableSkeleton";
 //import { a } from "@/lib/data";
 import { ITEM_PER_PAGE } from "@/lib/Item_per_page";
 import { prisma } from "@/lib/prisma";
@@ -11,7 +12,7 @@ import { Assignment, Class, Prisma, Subject, Teacher } from "@prisma/client";
 import { strict } from "assert";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 
 let cloumn = [
   {
@@ -60,7 +61,7 @@ const reanderRow = async (item: assList) => {
       key={item.id}
       className="  even:bg-slate-100 gap-4  border-b  border-gray-200 hover:bg-lamaPurpleLight"
     >
-      <td className=" ">{item.lesson.subject.name}</td>
+      <td className=" ">{item.title}</td>
 
       <td>{item.lesson.class.name}</td>
       <td className="  text-sm  hidden   md:table-cell">
@@ -193,7 +194,10 @@ const assignmentsList = async ({
       </div>
       {/* list of techaer */}
       <div>
-        <Table cloumn={cloumn} reanderRow={reanderRow} data={data} />
+       
+  <Table cloumn={cloumn} reanderRow={reanderRow} data={data} />
+
+        {/* <Table cloumn={cloumn} reanderRow={reanderRow} data={data} /> */}
       </div>
       {/* footer */}
       <div>

@@ -266,6 +266,7 @@ const AttendanceList = async ({
       include: {
         student: { select: { name: true } },
         lesson: { select: { name: true } },
+         
       },
       take: 4,
       skip: 4* (p - 1),

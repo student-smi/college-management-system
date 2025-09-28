@@ -72,7 +72,7 @@ export const studentSchema = z.object({
   sex: z.enum(["MALE", "FEMALE"], { message: "Sex is required!" }),
   gradeId : z.coerce.number().min(1,{message :" grade is required!"}),
   classId : z.coerce.number().min(1,{message :" Class is required!"}),
-  parentId : z.string().min(1,{message :"parent id is required!"}),
+  parentId : z.string().optional(),
 
 
 });
@@ -84,6 +84,7 @@ export const examschema = z.object({
    title: z.string().min(1, { message: "first name is requird !" }),
    startTime : z.coerce.date({message : "start date is requird ! "}),
    endTime : z.coerce.date({message : "end date is requird ! "}),
+
   lessonId : z.coerce.number({message :"lessonId is requird !"})
 
 
@@ -115,6 +116,7 @@ export const assignmentschema = z.object({
     title: z.string().min(1, { message: "Title is required!" }),
     startTime : z.coerce.date({message : "start date is requird ! "}),
     endTime : z.coerce.date({message : "end date is requird ! "}),
+    
      lessonId : z.coerce.number({message :"lessonId is requird !"})
 })
 
@@ -142,6 +144,7 @@ export const resultschema = z.object({
   score: z.coerce.number()
     .min(0, { message: "score must be >= 0" })
     .max(100, { message: "score must be <= 100" }), 
+  assignmentId: z.string({ message: "AssignmentId is required!" }).optional(), 
   classId :z.string({ message: "classId is required!" }).optional(), 
   teacherId : z.string({ message: "teacherId is required!" }).optional(), 
 })

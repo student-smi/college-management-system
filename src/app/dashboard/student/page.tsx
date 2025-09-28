@@ -1,7 +1,11 @@
 import Announcement from '@/components/Announcement'
+import AnnouncementSkeleton from '@/components/AnnouncementSkeleton'
 import BigCelender from '@/components/BigCelender'
+import BigCelenderConte from '@/components/BigCelenderConte'
+import BigCelenderSkeleton from '@/components/BigCelenderConteSkeleton'
 import EventCalendar from '@/components/EventCalendar'
-import React from 'react'
+import EventCalendarSkeleton from '@/components/EventCalendarSkeleton'
+import React, { Suspense } from 'react'
 
 const studentPage = () => {
   return (
@@ -10,13 +14,18 @@ const studentPage = () => {
       <div className=' w-full xl:w-2/3'>
       <div className=' h-full bg-white p-4 rounded-md'>
          <h1 className=' text-2xl font-semibold '>Schedule (4A)</h1>
-         <BigCelender/>
+           <Suspense fallback={<BigCelenderSkeleton/>}> <BigCelenderConte  /></Suspense>
+        
       </div>
       </div>
       {/* right */}
       <div className=' w-full xl:w-1/3 flex flex-col '>
-          <EventCalendar/>
-       <Announcement/>
+        <Suspense fallback={<EventCalendarSkeleton/>}>  <EventCalendar/>  </Suspense>
+
+        
+                 <Suspense fallback={<AnnouncementSkeleton/>}> <Announcement/></Suspense>
+          
+     
       </div>
     </div>
   )

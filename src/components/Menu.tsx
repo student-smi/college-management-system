@@ -122,7 +122,7 @@ import React from 'react'
 
 const Menu =async () => {
   let user = await currentUser()
-  let role = user?.publicMetadata?.role as string
+  let role = user?.publicMetadata?.role as string | undefined
   
   
   return (

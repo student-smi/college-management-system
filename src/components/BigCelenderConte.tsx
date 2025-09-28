@@ -17,6 +17,7 @@ const BigCelenderConte =async ({type , id} : {type : "teacherId"  | "ClassId" , 
     ))
   return (
     <div>
+        
         <BigCelender data={data}/>
 
     </div>

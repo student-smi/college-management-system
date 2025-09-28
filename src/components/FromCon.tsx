@@ -106,8 +106,14 @@ const FromCon =async ({
                       name : true
                      }
                   })
+                  const examClass = await prisma.class.findMany({
+                    select :{
+                      id: true,
+                      name: true
+                    }
+                  })
                     
-               renderData = { lessons :examLessons }
+               renderData = { lessons :examLessons  , class : examClass}
 
                 break;
                 
@@ -145,7 +151,13 @@ const FromCon =async ({
                  name : true
               }
             })
-             renderData = { assignment : lessonAssignment}
+             const assignmentClass = await prisma.class.findMany({
+                    select :{
+                      id: true,
+                      name: true
+                    }
+                  })
+             renderData = { assignment : lessonAssignment , class : assignmentClass}
             break;
          
            case "announcement":
@@ -198,9 +210,15 @@ const FromCon =async ({
                     surname : true
                   }
                 })
-            
+              
+                const AssignmentResult = await prisma.assignment.findMany({
+                  select:{
+                    id : true,
+                    title : true
+                  }
+                })
                 
-              renderData = {exam : examResult , teacher : tracherResult , classs : classResult , student : studentResult}
+              renderData = {exam : examResult , teacher : tracherResult , classs : classResult , student : studentResult , assignment : AssignmentResult}
                 break
 
                 case "event":
@@ -234,7 +252,7 @@ const FromCon =async ({
         }
     }
 
-    console.log("Teachers from DB:",  renderData);
+   
 
 
   return (

@@ -25,7 +25,9 @@
 import Announcements from '@/components/Announcement'
 import BigCelender from '@/components/BigCelender'
 import BigCelenderConte from '@/components/BigCelenderConte';
+import BigCelenderSkeleton from '@/components/BigCelenderConteSkeleton';
 import { auth } from '@clerk/nextjs/server';
+import { Suspense } from 'react';
 
 
 const TeacherPage =async () => {
@@ -37,7 +39,8 @@ const TeacherPage =async () => {
         <div className="h-full bg-white p-4 rounded-md">
           <h1 className="text-xl font-semibold">Schedule </h1>
         <div className=' w-full h-svh '>
-           <BigCelenderConte type="teacherId" id={userId!} />
+          <Suspense fallback={<BigCelenderSkeleton/>}> <BigCelenderConte type="teacherId" id={userId!} /></Suspense>
+          
           </div> 
         </div>
       </div>

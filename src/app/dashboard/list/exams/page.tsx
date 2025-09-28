@@ -62,7 +62,7 @@ type ExamsList = Exam & {
        <tr key={item.id} className="  even:bg-slate-100 gap-4  border-b  border-gray-200 hover:bg-lamaPurpleLight">
           <td className=" ">
             
-            {item.lesson.subject.name}
+            {item.title}
            
            
            
@@ -74,6 +74,7 @@ type ExamsList = Exam & {
           <td className="  text-sm  hidden   md:table-cell">{item.lesson.teacher.name + " " +item.lesson.teacher.surname}</td>
           <td className="  text-sm  hidden   md:table-cell">{Intl.DateTimeFormat().format(item.startTime)}</td>
 
+          <td className="  text-sm  hidden   md:table-cell">{Intl.DateTimeFormat().format(item.endTime)}</td>
         
          
           
