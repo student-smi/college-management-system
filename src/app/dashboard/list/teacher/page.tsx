@@ -36,7 +36,7 @@ let cloumn = [
   {
     header: "Classes",
     accesor: "classes",
-    className: " hidden md:table-cell",
+    className: "",
   },
   {
     header: "Phone",
@@ -74,19 +74,19 @@ const reanderRow =async (item: teacherList) => {
   return (
     <tr
       key={item.id}
-      className="  even:bg-slate-100 gap-4  border-b  border-gray-200 hover:bg-lamaPurpleLight"
+      className="  even:bg-slate-100 gap-4   border-b  border-gray-200 hover:bg-lamaPurpleLight"
     >
       <td className=" flex gap-3   object-cover ">
         <Image
-          src={ "/avatar.png"}
+          src={ item.img|| "/avatar.png"}
           alt=""
           width={40}
           height={40}
           className=" md:hidden xl:block  rounded-full object-cover"
         />
-        <div className=" flex  flex-col items-center  text-sm">
-          <h2 className=" font-semibold ">{item.name}</h2>
-          <p className=" text-xs text-gray-500 ">{item?.email}</p>
+        <div className=" flex  flex-col   ">
+          <h2 className=" font-semibold  text-start">{item.name}</h2>
+          <p className=" text-xs text-gray-500  text-start">{item?.email}</p>
         </div>
       </td>
 
@@ -94,15 +94,15 @@ const reanderRow =async (item: teacherList) => {
       <td className="  text-sm  hidden   md:table-cell">
         {item.subjects.map((subject) => subject.name).join(",")}
       </td>
-      <td className="text-sm hidden  md:table-cell">
+      <td className="text-sm ">
         {item.classes.map((classess) => classess.name).join(",")}
       </td>
       <td className=" text-sm hidden  md:table-cell">{item.phone}</td>
       <td className=" text-sm hidden  md:table-cell">{item.address}</td>
 
-      <td className=" flex  justify-center items-center gap-2  text-sm">
-        <Link href={`/dashboard/list/teacher/${item.id}`}>
-          <button className=" w-7 h-7 flex   items-center   justify-center  rounded-full bg-lamaSky">
+      <td className=" flex  justify-center items-center gap-2  text-sm    ">
+        <Link href={`/dashboard/list/teacher/${item.id}`} className=" flex items-center">
+          <button className=" w-7 h-7 flex   items-center   justify-center  rounded-full bg-lamaSky ">
             <Image src="/view.png" alt="" width={14} height={14} />
           </button>
         </Link>

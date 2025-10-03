@@ -6,7 +6,7 @@ import InputField from "../InputField";
 import Image from "next/image";
 import { parentSchema, ParentSchema, teacherSchema, TeacherSchema } from "@/lib/FromSchemaValidetion";
 import { useRouter } from "next/navigation";
-import { CreateTeacher, UpdateTeacher } from "@/lib/actions";
+import { CreateParents, CreateTeacher, UpdateParent, UpdateTeacher } from "@/lib/actions";
 import { toast } from "react-toastify";
 import { CldUploadWidget } from "next-cloudinary";
 
@@ -36,7 +36,7 @@ const parentForm = ({
 
   const [isPending, startTransition] = useTransition();
   const [state, formAction] = React.useActionState(
-    type === "create" ?  CreateTeacher : UpdateTeacher,
+    type === "create" ?   CreateParents : UpdateParent,
     {
       success: false,
       error: false,
@@ -56,12 +56,12 @@ const parentForm = ({
 
   useEffect(() => {
     if (state.success) {
-      toast(` parent is  ${type === "create" ? "created" : "updated"}`);
+      toast.success(` parent is  ${type === "create" ? "created" : "updated"}`);
       router.refresh();
       setIsOpen(false);
     }
   }, [state.success]);
-  const { parents } = renderData;
+ 
   return (
     <form action="" className=" flex flex-col gap-8 " onSubmit={onsubmit}>
       <h1 className="  text-xl  font-semibold">{`${
@@ -95,9 +95,10 @@ const parentForm = ({
           error={errors.password}
           defaultValue={data?.password}
         />
-           {type === "update" && (
-  <input type="hidden" {...register("id")} defaultValue={data?.id} />
-)}
+           {/* {type === "update"  && (
+ 
+)} */}
+ <input type="hidden" {...register("id")} defaultValue={data?.id ?? ""} />
       </div>
       <span className=" text-xs font-medium text-gray-500">
         personal informetion
@@ -137,7 +138,7 @@ const parentForm = ({
         />
 
        {/* <div className=" flex justify-between items-center gap-4"> */}
-     
+{/*      
         <div className=" flex flex-col gap-5 w-full md:w-1/4">
           <label className=" text-xs text-gray-500 ">Student name</label>
           <select
@@ -157,7 +158,7 @@ const parentForm = ({
               {errors.studentId.message.toString()}
             </p>
           )}
-        </div>
+        </div> */}
 
     
       {/* </div> */}
@@ -167,8 +168,10 @@ const parentForm = ({
           {state.error && (
         <span className="text-red-500">Something went wrong 😢</span>
       )}
-      <button className=" p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500">
-        {type === "create" ? "submit" : "update"}
+        <button className="p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500 hover:bg-blue-600 transition" disabled={isPending}>
+         {
+          isPending ? "Saving..." : type == "create" ? "Submit" : "update"
+         }
       </button>
     </form>
   );

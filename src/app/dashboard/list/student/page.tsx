@@ -26,12 +26,18 @@ let cloumn = [
     accesor: "studentId",
     className: " hidden md:table-cell",
   },
+   {
+    header: "User name",
+    accesor: "USername",
+    className: "",
+  },
   {
     header: "Grade",
     accesor: "grade",
     className: " hidden md:table-cell",
   },
 
+  
 //   {
 //     header: "Class",
 //     accesor: "class",
@@ -88,7 +94,7 @@ let cloumn = [
             {item.id}
           </td>
           {/* <td className="  text-sm  hidden   md:table-cell">{item.subjects.join(",")}</td> */}
-           <td className="text-sm hidden  md:table-cell">{item.username}</td>
+           <td className="">{item.username}</td>
           <td className="text-sm hidden  md:table-cell">{item.class.name[0]}</td>
           <td className=" text-sm hidden  md:table-cell">{item.phone}</td>
           <td className=" text-sm hidden  md:table-cell" >{item.address}</td>

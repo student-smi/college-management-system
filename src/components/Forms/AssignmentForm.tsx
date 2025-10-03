@@ -52,7 +52,7 @@ const AssignmentForm = ({
 
   useEffect(() => {
     if (state.success) {
-      toast(`exam is  ${ type === "create" ? "created" : "updated"}`)
+      toast.success(`Assignment is  ${ type === "create" ? "created" : "updated"}`)
       router.refresh();
       setIsOpen(false);
     }
@@ -153,8 +153,10 @@ const AssignmentForm = ({
       )}
 
       {/* Submit Button */}
-      <button className="p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500 hover:bg-blue-600 transition">
-        {type === "create" ? "Submit" : "Update"}
+        <button className="p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500 hover:bg-blue-600 transition" disabled={isPending}>
+         {
+          isPending ? "Saving..." : type == "create" ? "Submit" : "update"
+         }
       </button>
     </form>
   );

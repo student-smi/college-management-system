@@ -53,7 +53,7 @@ const ResultForm = ({
 
   useEffect(() => {
     if (state.success) {
-      toast(`Result is  ${ type === "create" ? "created" : "updated"}`)
+      toast.success(`Result is  ${ type === "create" ? "created" : "updated"}`)
       router.refresh();
       setIsOpen(false);
     }
@@ -105,7 +105,7 @@ const ResultForm = ({
   <label className="text-xs text-gray-500">Exam</label>
   <select
     {...register("examId")}
-    defaultValue={data?.examId?.toString() || ""}
+    defaultValue={data?.examId }
     className="w-full text-sm rounded-md p-2 ring-1 ring-gray-400 focus:outline-none"
   >
     <option value="">-- None --</option>
@@ -218,8 +218,10 @@ const ResultForm = ({
       )}
 
       {/* Submit Button */}
-      <button className="p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500 hover:bg-blue-600 transition">
-        {type === "create" ? "Submit" : "Update"}
+      <button className="p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500 hover:bg-blue-600 transition" disabled={isPending}>
+         {
+          isPending ? "Saving..." : type == "create" ? "Submit" : "update"
+         }
       </button>
     </form>
   );

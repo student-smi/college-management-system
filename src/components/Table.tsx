@@ -10,12 +10,13 @@ const Table = ({cloumn ,
     
 ) => {
   return (
-    <table className=' w-full p-4 m-2'> 
-        <thead className=' w-full  '>
-            <tr className=' text-start font-semibold w-full  text-gray-600  '>
+    //<table className=' w-full p-4 m-2'> 
+    <table className='w-full border-collapse border border-gray-200 rounded-lg'>
+        <thead className=' '>
+            <tr className=' bg-gray-100   text-start text-gray-700 font-semibold  '>
              {
                 cloumn.map(item=>(
-                    <th  key={item.accesor}  className={item.className}>{ item.header  }</th>
+                    <th  key={item.accesor}  className={`${item.className} bg-gray-100   text-start text-gray-700 font-semibold `}>{ item.header  }</th>
                 ))
              }
             </tr>

@@ -182,8 +182,8 @@ export const eventSchema = z.object({
   title: z.string().min(3, "Title is required"),
   description: z.string().min(5, "Description is required"),
  
-    startTime : z.coerce.date({message : "start date is requird ! "}),
-   endTime : z.coerce.date({message : "end date is requird ! "}),
+  startTime : z.coerce.date({message : "start date is requird ! "}),
+  endTime : z.coerce.date({message : "end date is requird ! "}),
   classId: z.string().nonempty("Class is required"),
 });
 

@@ -53,7 +53,7 @@ const LessonForm = ({
 
   useEffect(() => {
     if (state.success) {
-      toast(`Lesson is  ${ type === "create" ? "created" : "updated"}`)
+      toast.success(`Lesson is  ${ type === "create" ? "created" : "updated"}`)
       router.refresh();
       setIsOpen(false);
     }
@@ -108,7 +108,7 @@ const LessonForm = ({
         />
       </div>
 
-      <div className=" flex flex-wrap gap-5 justify-between      git init      git init">
+      <div className=" flex flex-wrap gap-5 justify-between      ">
         <InputField
           type="time"
           label="End time"
@@ -129,7 +129,7 @@ const LessonForm = ({
         >
           {subject?.map(
             (sub : { id: string; name: string; }) => (
-              <option value={sub.id} key={sub.id}>
+              <option value={sub.id} key={sub.id} >
                 {sub.name}
               </option>
             )
@@ -201,8 +201,10 @@ const LessonForm = ({
       )}
 
       {/* Submit Button */}
-      <button className="p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500 hover:bg-blue-600 transition">
-        {type === "create" ? "Submit" : "Update"}
+       <button className="p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500 hover:bg-blue-600 transition" disabled={isPending}>
+         {
+          isPending ? "Saving..." : type == "create" ? "Submit" : "update"
+         }
       </button>
     </form>
   );

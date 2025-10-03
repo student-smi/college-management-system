@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { FormModel } from "./FromCon";
+import CreateFormSkeleton from "./Forms/FormSkeleton";
 //import AttendanceForm from "./Forms/AttendanceFrom";
 //import ResultForm from "";
 //import parentForm from "";
@@ -70,22 +71,16 @@ const ParentFrom  = dynamic(()=>import("./Forms/ParentFrom") ,{
   </h1>
 })
 const ResultFrom  = dynamic(()=>import("./Forms/ResultFrom") ,{
-    loading :()=> <h1>
-    loading...
-  </h1>
+    loading :()=><CreateFormSkeleton/>
 })
 
 
 const EventFrom  = dynamic(()=>import("./Forms/EventFrom") ,{
-    loading :()=> <h1>
-    loading...
-  </h1>
+    loading :()=> <CreateFormSkeleton/>
 })
 
 const AttendanceForm= dynamic(()=>import("./Forms/AttendanceFrom") ,{
-    loading :()=> <h1>
-    loading...
-  </h1>
+    loading :()=> <CreateFormSkeleton/>
 })
 const form: {
   [key: string]: (
@@ -154,10 +149,11 @@ const Formdata = ({
   }, [isOpen]);
  
     const [state, formAction] = React.useActionState(
-       deleteActionMap[table] ,
+       deleteActionMap[table],
     {
       success: false,
       error: false,
+      isPending: false, 
     }
   );
    let router = useRouter()
@@ -189,8 +185,10 @@ const Formdata = ({
             <button
               type="submit"
               className="py-2 px-4 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+              disabled={state.isPending}
+
             >
-              Delete
+               {state.isPending ? "Deleting..." : "Delete"}
             </button>
             <button
               type="button"

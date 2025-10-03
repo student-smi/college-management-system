@@ -19,30 +19,30 @@ import React from "react";
 
 let cloumn = [
   {
-    header: "Student name",
+    header: "Result name",
     accesor: "info",
     className: "",
   },
 
   {
-    header: "Class",
-    accesor: "Class",
-    className: "",
+    header: "Teacher name",
+    accesor: "teacher",
+    className: " hidden md:table-cell",
   },
 
   {
-    header: "teacher",
-    accesor: "techer",
-    className: " hidden md:table-cell",
-  },
-  {
-    header: "Student",
+    header: "Student name",
     accesor: "student",
-    className: " hidden md:table-cell",
+    className: "",
   },
   {
     header: "Date",
     accesor: "Date",
+    className: " hidden md:table-cell",
+  },
+  {
+    header: "class",
+    accesor: "class",
     className: " hidden md:table-cell",
   },
  
@@ -93,7 +93,7 @@ type ResultList = {
 
        
         <td className="  text-sm  hidden   md:table-cell">{item.teacherName + " " + item.teacherSurname}</td>
-        <td className="  text-sm  hidden   md:table-cell">{item.studentName + " " + item.studentSurname}</td>
+        <td className="  ">{item.studentName + " " + item.studentSurname}</td>
         <td className="  text-sm  hidden   md:table-cell"> {new Intl.DateTimeFormat("en-US").format(item.startTime)}</td>
         <td className="  text-sm  hidden   md:table-cell">{item.className}</td>
         <td className="  text-sm  hidden   md:table-cell">{item.score}</td>
@@ -208,7 +208,7 @@ const resultsList =async ({searchParams} : {searchParams : { [key : string] : st
     <div className=" flex-1 items-center rounded-md bg-white m-4 ">
       {/* heading */}
       <div className=" flex justify-between items-center ">
-        <h1 className="  hidden md:block text-lg font-semibold">All classes</h1>
+        <h1 className="  hidden md:block text-lg font-semibold">Results</h1>
         <div className=" flex flex-col  md:flex-row gap-3  w-full md:w-auto">
           <TableSearch />
           <div className=" flex  items-center w-full md:w-auto  justify-end  gap-2">

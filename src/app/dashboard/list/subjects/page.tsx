@@ -23,7 +23,7 @@ let cloumn = [
   {
     header: "Teachers",
     accesor: "teachers",
-    className: " hidden md:table-cell",
+    className: " ",
   },
 
   {
@@ -111,7 +111,7 @@ const subjectList = async ({searchParams} : {searchParams : { [key : string] : s
     <div className=" flex-1 items-center rounded-md bg-white m-4 ">
       {/* heading */}
       <div className=" flex justify-between items-center ">
-        <h1 className="  hidden md:block text-lg font-semibold">Teachers</h1>
+        <h1 className="  hidden md:block text-lg font-semibold"> All Subjects </h1>
         <div className=" flex flex-col  md:flex-row gap-3  w-full md:w-auto">
           <TableSearch />
           <div className=" flex  items-center w-full md:w-auto  justify-end  gap-2">

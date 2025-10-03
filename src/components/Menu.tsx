@@ -1,4 +1,18 @@
-const menuItems = [
+"use client";
+
+
+
+import { useUser } from '@clerk/nextjs';
+// import { currentUser } from '@clerk/nextjs/server';
+// import { role } from '@/lib/data';
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react'
+
+const Menu =() => {
+  // let user = await currentUser()
+  // let role = user?.publicMetadata?.role as string | undefined
+  const menuItems = [
   {
     title: "MENU",
     items: [
@@ -112,18 +126,8 @@ const menuItems = [
     ],
   },
 ];
-
-
-import { currentUser } from '@clerk/nextjs/server';
-// import { role } from '@/lib/data';
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react'
-
-const Menu =async () => {
-  let user = await currentUser()
-  let role = user?.publicMetadata?.role as string | undefined
-  
+  const { user } = useUser();
+  const role = user?.publicMetadata?.role as string | undefined;
   
   return (
 

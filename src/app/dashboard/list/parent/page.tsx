@@ -22,9 +22,9 @@ let cloumn = [
   },
 
   {
-    header: "Students name",
+    header: " Student name",
     accesor: "students",
-    className: " hidden md:table-cell",
+    className: " ",
   },
 
   
@@ -74,7 +74,7 @@ let cloumn = [
           </td>
 
           
-          <td className="  text-sm  hidden   md:table-cell">{item.students.map(s=>(s.name)).join(",")}</td>
+          <td className="  text-sm w-[40%]">{item.students.map(s=>(s.name)).join(",")}</td>
         
           <td className=" text-sm hidden  md:table-cell">{item.phone}</td>
           <td className=" text-sm hidden  md:table-cell" >{item.address}</td>

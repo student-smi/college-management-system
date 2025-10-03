@@ -5,7 +5,7 @@ import BigCelender from './BigCelender'
 const BigCelenderConte =async ({type , id} : {type : "teacherId"  | "ClassId" , id : string | number}) => {
     let resdata = await prisma.lesson.findMany({
         where :{
-            ...(type === "teacherId"  ? {teacherId : id as string} : { classId : id as number})
+            ...(type === "teacherId"  ? {teacherId : id as string | undefined} : { classId : id as number})
         }
     })
 

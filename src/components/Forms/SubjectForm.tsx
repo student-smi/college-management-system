@@ -52,7 +52,7 @@ const StudentForm = ({
 
   useEffect(() => {
     if (state.success) {
-      toast(`subject is  ${ type === "create" ? "created" : "updated"}`)
+      toast.success(`subject is  ${ type === "create" ? "created" : "updated"}`)
       router.refresh();
       setIsOpen(false);
     }
@@ -80,10 +80,7 @@ const StudentForm = ({
           error={errors.name}
           defaultValue={data?.name}
         />
-      </div>
-
-      {/* Teachers Multiple Select */}
-      <div className="flex flex-col gap-2 w-full md:w-1/4">
+            <div className="flex flex-col gap-2 w-full md:w-1/4">
         <label className="text-xs text-gray-500">Teachers</label>
         <select
           {...register("teachers")}
@@ -107,6 +104,10 @@ const StudentForm = ({
           </p>
         )}
       </div>
+      </div>
+
+      {/* Teachers Multiple Select */}
+  
 
       {/* Error */}
       {state.error && (
@@ -114,8 +115,10 @@ const StudentForm = ({
       )}
 
       {/* Submit Button */}
-      <button className="p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500 hover:bg-blue-600 transition">
-        {type === "create" ? "Submit" : "Update"}
+       <button className="p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500 hover:bg-blue-600 transition" disabled={isPending}>
+         {
+          isPending ? "Saving..." : type == "create" ? "Submit" : "update"
+         }
       </button>
     </form>
   );

@@ -19,7 +19,11 @@ let cloumn = [
     accesor: "info",
     className: "",
   },
-
+ {
+    header: "Description",
+    accesor: "description",
+    className: "hidden md:table-cell",
+  },
   {
     header: "Class",
     accesor: "Class",
@@ -66,7 +70,13 @@ type  eventsList = Event& {class : Class}
            
            
           </td>
-
+         <td className=" text-sm  hidden   md:table-cell">
+            
+            {item.description}
+           
+           
+           
+          </td>
           <td >
             {item.class?.name || "-"}
           </td>
@@ -126,7 +136,7 @@ const rolcondition = {
   teacher : { lessons : {some : { teacherId :  userId!}}},
   student: { students : {some : { id :  userId!}}},
   parent : { students : {some : { parentId :  userId!}}},
-  
+   
 
 }
 
@@ -156,7 +166,7 @@ query.OR = [
     <div className=" flex-1 items-center rounded-md bg-white m-4 ">
       {/* heading */}
       <div className=" flex justify-between items-center ">
-        <h1 className="  hidden md:block text-lg font-semibold">All classes</h1>
+        <h1 className="  hidden md:block text-lg font-semibold">All Events</h1>
         <div className=" flex flex-col  md:flex-row gap-3  w-full md:w-auto">
           <TableSearch />
           <div className=" flex  items-center w-full md:w-auto  justify-end  gap-2">

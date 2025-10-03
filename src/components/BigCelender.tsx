@@ -16,7 +16,7 @@ const BigCelender = ({data} : {data : {title : string ; start : Date ; end : Dat
     return (
          <Calendar
       localizer={localizer}
-      events={calendarEvents}
+      events={data}
       startAccessor="start"
       endAccessor="end"
       views={["work_week" , "day"]}

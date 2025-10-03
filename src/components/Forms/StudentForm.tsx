@@ -43,6 +43,8 @@ const StudentForm = ({
     }
   );
 
+  
+
   const onsubmit = handleSubmit((data) => {
     console.log("Submitting: ", data);
     startTransition(() => {
@@ -56,17 +58,25 @@ const StudentForm = ({
 
   useEffect(() => {
     if (state.success) {
-      toast(` student is  ${type === "create" ? "created" : "updated"}`);
+      toast.success(` student is  ${type === "create" ? "created" : "updated"}`);
       router.refresh();
       setIsOpen(false);
     }
-  }, [state.success]);
-  const {  classes , grades } = renderData;
+     if (state.error) {
+      toast.error(typeof state.error === "string" ? state.error : "Something went wrong ❌");
+    }
+  }, [state.success , state.error]);
+  const {  classes , grades , parent } = renderData;
   return (
     <form action="" className=" flex flex-col gap-8 " onSubmit={onsubmit}>
       <h1 className="  text-xl  font-semibold">{`${
         type === "create" ? "Create a student" : "update a student"
       }`}</h1>
+     
+      {type === "update" && (
+  <input type="hidden" {...register("id")} defaultValue={data?.id} />
+)}
+
       <span className=" textxs font-medium text-gray-500">
         Authontication informetion
       </span>
@@ -144,19 +154,40 @@ const StudentForm = ({
           error={errors.birthday}
           defaultValue={data?.birthday.toISOString().split("T")[0]}
         />
-         <InputField
+         {/* <InputField
           type="text"
           label="ParentID"
           register={register}
           name="parentId"
           error={errors.parentId}
           defaultValue={data?.parentId}
-        />
+        /> */}
+           <div className=" flex flex-col gap-5 w-full md:w-1/4">
+          <label className=" text-xs text-gray-500 ">Parent</label>
+          <select
+            className="w-full text-sm rounded-md p-2 ring-1 ring-gray-400 focus:outline-none"
+            {...register("parentId")}
+            defaultValue={data?.parentId}
+      
+          >
+            {parent.map((s: { id: string;  name :string ; }) => (
+              <option value={s.id} key={s.id}  >
+                {s.name } 
+              </option>
+            ))}
+          </select>
+          {errors.parentId?.message && (
+            <p className=" text-xl text-red-500 ">
+              {errors.parentId.message.toString()}
+            </p>
+          )}
+        </div>
+
         <InputField
           type="text"
           label="Blood Type"
           register={register}
-          name="bloodtype"
+          name="bloodType"
           error={errors.bloodType}
           defaultValue={data?.bloodType}
         />
@@ -239,8 +270,10 @@ const StudentForm = ({
           {state.error && (
         <span className="text-red-500">Something went wrong 😢</span>
       )}
-      <button className=" p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500">
-        {type === "create" ? "submit" : "update"}
+       <button className="p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500 hover:bg-blue-600 transition" disabled={isPending}>
+         {
+          isPending ? "Saving..." : type == "create" ? "Submit" : "update"
+         }
       </button>
     </form>
   );

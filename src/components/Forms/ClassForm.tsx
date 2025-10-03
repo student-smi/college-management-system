@@ -52,13 +52,14 @@ const ClassForm = ({
 
   useEffect(() => {
     if (state.success) {
-      toast(`class is  ${ type === "create" ? "created" : "updated"}`)
+      toast.success(`class is  ${ type === "create" ? "created" : "updated"}`)
       router.refresh();
       setIsOpen(false);
     }
   }, [state.success]);
 
   // ✅ safe guard
+  
   const {teachers , grade} =  renderData
 
   return (
@@ -149,8 +150,12 @@ const ClassForm = ({
       )}
 
       {/* Submit Button */}
-      <button className="p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500 hover:bg-blue-600 transition">
-        {type === "create" ? "Submit" : "Update"}
+      <button className="p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500 hover:bg-blue-600 transition" disabled={isPending}>
+        {isPending
+          ? "Saving..."
+          : type === "create"
+          ? "Submit"
+          : "Update"}
       </button>
     </form>
   );

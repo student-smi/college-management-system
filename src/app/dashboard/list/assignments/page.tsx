@@ -16,7 +16,7 @@ import React, { Suspense } from "react";
 
 let cloumn = [
   {
-    header: "Student name",
+    header: "Assignment name",
     accesor: "info",
     className: "",
   },
@@ -30,6 +30,11 @@ let cloumn = [
   {
     header: "teacher",
     accesor: "techer",
+    className: " hidden md:table-cell",
+  },
+  {
+    header: "Start Date",
+    accesor: "StartDate",
     className: " hidden md:table-cell",
   },
   {
@@ -66,6 +71,9 @@ const reanderRow = async (item: assList) => {
       <td>{item.lesson.class.name}</td>
       <td className="  text-sm  hidden   md:table-cell">
         {item.lesson.teacher.name + " " + item.lesson.teacher.surname}
+      </td>
+       <td className="  text-sm  hidden   md:table-cell">
+        {Intl.DateTimeFormat().format(item.startDate)}
       </td>
       <td className="  text-sm  hidden   md:table-cell">
         {Intl.DateTimeFormat().format(item.dueDate)}
@@ -176,7 +184,7 @@ const assignmentsList = async ({
     <div className=" flex-1 items-center rounded-md bg-white m-4 ">
       {/* heading */}
       <div className=" flex justify-between items-center ">
-        <h1 className="  hidden md:block text-lg font-semibold">All classes</h1>
+        <h1 className="  hidden md:block text-lg font-semibold">Assignments</h1>
         <div className=" flex flex-col  md:flex-row gap-3  w-full md:w-auto">
           <TableSearch />
           <div className=" flex  items-center w-full md:w-auto  justify-end  gap-2">

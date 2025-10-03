@@ -298,7 +298,7 @@ const user = await clerkClient.users.createUser({
 
      await prisma.student.create({
         data : {
-           id: user.id,
+           id: user.id ,
         username: data.username,
         name: data.name,
         surname: data.surname,
@@ -311,7 +311,8 @@ const user = await clerkClient.users.createUser({
         birthday: data.birthday,
         gradeId : data.gradeId,
         classId : data.classId,
-        ...(data.parentId ? { parentId: data.parentId } : {}), // ✅ Only if valid
+      
+        ...(data.parentId ? { parentId: data.parentId } : {}), 
       }
      })
 
@@ -423,19 +424,9 @@ export async function CreateExam(curruntState : {success :  boolean , error : bo
      })
 
    
- const students = exam.lesson.class.students;
 
-  try {
-      const msg = await client.messages.create({
-        body: `📢  Exam "${exam.title}" scheduled from ${exam.startTime} to ${exam.endTime}.`,
-        from: process.env.TWILIO_PHONE!, // Twilio number
-        to: "+919023401172", // 👈 test number
-      });
-
-      console.log(`✅ Test SMS sent: ${msg.sid}`);
-    } catch (err) {
-      console.error("❌ Failed to send test SMS:", err);
-    }
+  
+     
      return {success : true , error :false , exam}
  } catch (error) {
     console.log(error);
@@ -494,6 +485,7 @@ export async function CreateEvent(curruntState : {success :  boolean , error : b
          data :{
             title : data.title,
             description: data.description,
+         
             startTime: data.startTime,
             endTime: data.endTime,
          }
@@ -739,46 +731,7 @@ export async function DeleteLesson(curruntState : {success :  boolean , error : 
    }
 }
 
-// export async function  CreateParents(curruntState : {success :  boolean , error : boolean} ,data:  ParentSchema) {
-//  try { 
-//    //  console.log("Clerk client keys:", Object.keys(clerkClient)); // yaha chalega
-// const user = await clerkClient.users.createUser({
-//   username: data.username,
-//   password: data.password,
-//   firstName: data.name,
-//   lastName: data.surname,
-//   publicMetadata: {
-//     role: "teacher",
-//   },
-// });
 
-
-
-//      await prisma.parent.create({
-//         data : {
-//            id: user.id,
-//         username: data.username,
-//         name: data.name,
-//         surname: data.surname,
-//         email: data.email || null,
-       
-//         address: data.address,
-//         students : {
-//              connect: data.studentId?.map((subjectId: string) => ({
-//             id: parseInt(),
-//         }
-             
-//         }
-//      })
-
-//     // revalidatePath("/dashboard/list/subjects")
-//      return {success : true , error :false}
-//  } catch (error : any) {
-//     console.log(error);
-//     console.error("Full Clerk error:", JSON.stringify(error.errors, null, 2));
-//      return {success : false , error : true}
-//  }
-// }
 
 
 
@@ -867,16 +820,33 @@ export async function CreateAttendance(
   data: Attendanceschema
 ) {
   try {
-   await prisma.attendance.create({
-        data: {
-        date: data.date,
-        lessonId: parseInt(data.lessonId),
-        studentId: data.studentId.toString(),
-        present: data.present,
+   // const attem = await prisma.attendance.create({
+   //      data: {
+   //      date: data.date,
+   //      lessonId: parseInt(data.lessonId),
+   //      studentId: data.studentId.toString(),
+   //      present: data.present,
+   //    },
+   // })
+ const attendance = await prisma.attendance.create({
+      data: {
+        date: new Date(data.date), // ensure it's a valid Date
+        lessonId: Number(data.lessonId), // convert lessonId safely
+        studentId: String(data.studentId), // studentId is String in schema
+        present: Boolean(data.present), // ensure boolean
       },
-   })
-
-    return { success: true, error: false };
+      include: {
+        student: { select: { name: true } },
+        lesson: {
+          select: {
+            name: true,
+            class: { select: { name: true } },
+            teacher: { select: { name: true } },
+          },
+        },
+      },
+    });
+    return { success: true, error: false  , attendance };
   } catch (error) {
     console.log(error);
     return { success: false, error: true };
@@ -922,4 +892,90 @@ export async function DeleteAttendance(curruntState : {success :  boolean , erro
         console.log(error);
      return {success : false , error : true}
    }
+}
+
+
+export async function  CreateParents(curruntState : {success :  boolean , error : boolean} ,data:  ParentSchema) {
+ try { 
+   //  console.log("Clerk client keys:", Object.keys(clerkClient)); // yaha chalega
+const user = await clerkClient.users.createUser({
+  username: data.username,
+  password: data.password,
+  firstName: data.name,
+  lastName: data.surname,
+  publicMetadata: {
+    role: "parent",
+  },
+});
+
+
+
+     await prisma.parent.create({
+        data : {
+      //   id : data.id ,
+      id : data.id || "",
+        name : data.name,
+      
+        surname : data.surname,
+       username : data.username,
+       address : data.address,
+       phone : data.phone || "",
+       email : data.email || "",
+
+        
+     }
+    })
+
+    // revalidatePath("/dashboard/list/subjects")
+     return {success : true , error :false}
+ } catch (error : any) {
+    console.log(error);
+    console.error("Full Clerk error:", JSON.stringify(error.errors, null, 2));
+     return {success : false , error : true}
+ }
+}
+
+
+export async function  UpdateParent(curruntState : {success :  boolean , error : boolean} ,data:  ParentSchema) {
+ try { 
+   //  console.log("Clerk client keys:", Object.keys(clerkClient)); // yaha chalega
+if (!data.id) {
+  throw new Error("Parent ID is required");
+}
+const user = await clerkClient.users.updateUser(data.id, {
+  username: data.username,
+  ...(data.password !== "" && { password: data.password }),
+  firstName: data.name,
+  publicMetadata: {
+    role: "parent",
+  },
+});
+
+
+
+     await prisma.parent.update({
+      where :{
+          id : data.id
+      },
+        data : {
+        id : data.id ,
+        
+        name : data.name,
+        surname : data.surname,
+       username : data.username,
+       address : data.address,
+       phone : data.phone || "",
+       email : data.email,
+       
+        
+     }
+    })
+
+    // revalidatePath("/dashboard/list/subjects")
+     return {success : true , error :false}
+ } catch (error : any) {
+    console.log(error);
+    console.error("Full Clerk error:", JSON.stringify(error.errors, null, 2));
+     return {success : false , error : true}
+ }
 }

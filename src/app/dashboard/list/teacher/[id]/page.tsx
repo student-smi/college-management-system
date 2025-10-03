@@ -10,7 +10,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import React from "react";
 
-const SingleTeacherPage =async ({params:{id}} :{params :{id : string}}) => {
+const SingleTeacherPage =async ({params} :{params :Promise<{ id: string }>}) => {
+  const {id} =await params
     let teacher : Teacher & {_count :{ subjects : number ; lessons : number ; classes : number}} | null = await prisma.teacher.findUnique({
     where: {id},
     include :{
@@ -63,7 +64,7 @@ const SingleTeacherPage =async ({params:{id}} :{params :{id : string}}) => {
                 </div>
                   <div className=" w-full md:w-1/3 lg:w-full 2xl:w-1/3  flex items-center gap-2">
                   <Image src="/date.png" alt="" height={14} width={14} />
-                  <span>May 2025</span>
+                  <span>{teacher.birthday?.toLocaleDateString()}</span>
                 </div>
                   <div className=" w-full md:w-1/3 lg:w-full 2xl:w-1/3  flex items-center gap-2">
                   <Image src="/mail.png" alt="" height={14} width={14} />
@@ -123,11 +124,11 @@ const SingleTeacherPage =async ({params:{id}} :{params :{id : string}}) => {
       <div className=" bg-white p-4 rounded-md gap-3 ">
         <h1 className=" text-xl  font-semibold">Schedule</h1>
         <div className=" mt-4  text-xs p-4 flex flex-wrap gap-5">
-          <Link href={`/dashboard/list/classes?supervisorId=${"teacher2"}`} className=" p-3 rounded-md  bg-lamaSkyLight">teacher's class </Link>
-           <Link href={`/dashboard/list/lessons?teacherId=${"teacher2"}`} className=" p-3 rounded-md  bg-lamaPurpleLight">teacher's Lesson </Link>
-            <Link href={`/dashboard/list/student?teacherId=${"teacher2"}`} className=" p-3 rounded-md  bg-lamaYellowLight">teacher's students </Link>
-             <Link href={`/dashboard/list/exams?teacherId=${"teacher2"}`} className=" p-3 rounded-md  bg-pink-50">teacher's exam </Link>
-              <Link href={`/dashboard/list/assignments?teacherId=${"teacher2"}`} className=" p-3 rounded-md bg-red-50">teacher's assinments</Link>
+          <Link href={`/dashboard/list/classes?supervisorId=${teacher.id}`} className=" p-3 rounded-md  bg-lamaSkyLight">teacher's class </Link>
+           <Link href={`/dashboard/list/lessons?teacherId=${teacher.id}`} className=" p-3 rounded-md  bg-lamaPurpleLight">teacher's Lesson </Link>
+            <Link href={`/dashboard/list/student?teacherId=${teacher.id}`} className=" p-3 rounded-md  bg-lamaYellowLight">teacher's students </Link>
+             <Link href={`/dashboard/list/exams?teacherId=${teacher.id}`} className=" p-3 rounded-md  bg-pink-50">teacher's exam </Link>
+              <Link href={`/dashboard/list/assignments?teacherId=${teacher.id}`} className=" p-3 rounded-md bg-red-50">teacher's assinments</Link>
 
         </div>
       </div>

@@ -35,7 +35,7 @@ let cloumn = [
   {
     header: "Supervisor",
     accesor: "supervisor",
-    className: " hidden md:table-cell",
+    className: "",
   },
  
   {
@@ -75,7 +75,7 @@ type classes =  {
             {item.capacity}
           </td>
           <td className="  text-sm  hidden   md:table-cell">{item.grade.level}</td>
-          <td className="text-sm hidden  md:table-cell">{item.supervisor.name + " "+ item.supervisor.surname}</td>
+          <td className="">{item.supervisor.name + " "+ item.supervisor.surname}</td>
          
           
           <td className=" flex  justify-center items-center gap-2  text-sm">

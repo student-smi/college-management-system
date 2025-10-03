@@ -28,6 +28,12 @@ let cloumn = [
     accesor: "info",
     className: "",
   },
+   {
+    header: "Description",
+    accesor: "description",
+    className: "hidden md:table-cell",
+  },
+
 
   {
     header: "Class",
@@ -63,7 +69,7 @@ const reanderRow =async (item: announcementslist) => {
         className="  even:bg-slate-100 gap-4  border-b  border-gray-200 hover:bg-lamaPurpleLight"
       >
         <td className=" ">{item.title}</td>
-
+    <td className=" text-sm  hidden   md:table-cell">{item.description}</td>
         <td className="text-sm  hidden   md:table-cell">{item?.class?.name || ""}</td>
        
         <td className="  text-sm  hidden   md:table-cell">{Intl.DateTimeFormat().format(item.date)}</td>
@@ -123,7 +129,7 @@ const announcementsList =async ({searchParams} : {searchParams : {[key : string]
     <div className=" flex-1 items-center rounded-md bg-white m-4 ">
       {/* heading */}
       <div className=" flex justify-between items-center ">
-        <h1 className="  hidden md:block text-lg font-semibold">All classes</h1>
+        <h1 className="  hidden md:block text-lg font-semibold"> Announcements</h1>
         <div className=" flex flex-col  md:flex-row gap-3  w-full md:w-auto">
           <TableSearch />
           <div className=" flex  items-center w-full md:w-auto  justify-end  gap-2">

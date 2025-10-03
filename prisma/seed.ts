@@ -1,4 +1,5 @@
 import { Day, PrismaClient, UserSex } from  "@prisma/client"
+import { now } from "moment";
 const prisma = new PrismaClient();
 
 async function main() {

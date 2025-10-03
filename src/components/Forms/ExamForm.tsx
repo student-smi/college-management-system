@@ -52,7 +52,7 @@ const ExamForm = ({
 
   useEffect(() => {
     if (state.success) {
-      toast(`exam is  ${ type === "create" ? "created" : "updated"}`)
+      toast.success(`exam is  ${ type === "create" ? "created" : "updated"}`)
       router.refresh();
       setIsOpen(false);
     }
@@ -86,7 +86,7 @@ const ExamForm = ({
           register={register}
           name="startTime"
           error={errors.startTime}
-          defaultValue={data?.startTime}
+          defaultValue={data?.startTime.toISOString().split("T")[0]}
         />
          <InputField
           type="Date"
@@ -94,7 +94,7 @@ const ExamForm = ({
           register={register}
           name="endTime"
           error={errors.endTime}
-          defaultValue={data?.endTime}
+          defaultValue={data?.endTime.toISOString().split("T")[0]}
         />
       </div>
  {/* <div className="flex flex-col gap-2 w-full md:w-1/4">
@@ -155,8 +155,10 @@ const ExamForm = ({
       )}
 
       {/* Submit Button */}
-      <button className="p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500 hover:bg-blue-600 transition">
-        {type === "create" ? "Submit" : "Update"}
+       <button className="p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500 hover:bg-blue-600 transition" disabled={isPending}>
+         {
+          isPending ? "Saving..." : type == "create" ? "Submit" : "update"
+         }
       </button>
     </form>
   );

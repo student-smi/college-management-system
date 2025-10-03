@@ -67,6 +67,9 @@ const adminPage =async ({searchParams }: {searchParams :{[key : string] : string
   );
 }
 
+
+
+
 function AttendanceSkeleton() {
   return (
     <div className="bg-white rounded-lg w-full h-[400px] p-4 animate-pulse">

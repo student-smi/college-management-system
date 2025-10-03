@@ -90,7 +90,13 @@ const FromCon =async ({
                       }
                     }
                 })
-               renderData = { grades : studentGrade , classes : studentClasses}
+                const StudentPArents = await prisma.parent.findMany({
+                  select :{
+                    id : true,
+                    name : true,
+                  }
+                })
+               renderData = { grades : studentGrade , classes : studentClasses , parent :  StudentPArents}
 
                 break;
                       case  "exam":

@@ -53,7 +53,7 @@ const  EventForm = ({
 
   useEffect(() => {
     if (state.success) {
-      toast(`Lesson is  ${ type === "create" ? "created" : "updated"}`)
+      toast(`Event is  ${ type === "create" ? "created" : "updated"}`)
       router.refresh();
       setIsOpen(false);
     }
@@ -89,21 +89,31 @@ const  EventForm = ({
          defaultValue={data?.description}/>
          {errors.description?.message && <p className=' text-xs text-red-500 '>{errors.description?.message?.toString()}</p>}
     </div>
+       
          <InputField
-          type="Date"
+          type="datetime-local"
           label="start time"
           register={register}
           name="startTime"
           error={errors.startTime}
-          defaultValue={data?.startTime.toISOString().split("T")[0]}
+          defaultValue={
+         data?.startTime 
+      ? new Date(data.startTime).toISOString().slice(0, 16) // YYYY-MM-DDTHH:mm
+      : ""
+  
+
+          }
         />
   <InputField
-          type="Date"
+          type="datetime-local"
           label="end time"
           register={register}
           name="endTime"
           error={errors.endTime}
-          defaultValue={data?.endTime.toISOString().split("T")[0]}
+          defaultValue={   data?.startTime 
+      ? new Date(data.startTime).toISOString().slice(0, 16) // YYYY-MM-DDTHH:mm
+      : ""
+  }
         />
         
       <div className="flex flex-col gap-2 w-full md:w-1/4 ">
@@ -147,8 +157,10 @@ const  EventForm = ({
       )}
 
       {/* Submit Button */}
-      <button className="p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500 hover:bg-blue-600 transition">
-        {type === "create" ? "Submit" : "Update"}
+       <button className="p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500 hover:bg-blue-600 transition" disabled={isPending}>
+         {
+          isPending ? "Saving..." : type == "create" ? "Submit" : "update"
+         }
       </button>
     </form>
   );

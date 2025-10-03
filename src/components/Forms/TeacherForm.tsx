@@ -56,7 +56,7 @@ const TeacherForm = ({
 
   useEffect(() => {
     if (state.success) {
-      toast(` teacher is  ${type === "create" ? "created" : "updated"}`);
+      toast.success(` teacher is  ${type === "create" ? "created" : "updated"}`);
       router.refresh();
       setIsOpen(false);
     }
@@ -142,15 +142,15 @@ const TeacherForm = ({
           register={register}
           name="birthday"
           error={errors.birthday}
-          defaultValue={data?.birthday}
+          defaultValue={data?.birthday.toISOString().split("T")[0]}
         />
         <InputField
           type="text"
           label="Blood Type"
           register={register}
-          name="bloodtype"
+          name="bloodType"
           error={errors.bloodType}
-          defaultValue={data?.bloodType}
+          defaultValue={data?.bloodType || ""}
         />
       </div>
       <div className=" flex justify-between items-center gap-4">
@@ -211,8 +211,10 @@ const TeacherForm = ({
           {state.error && (
         <span className="text-red-500">Something went wrong 😢</span>
       )}
-      <button className=" p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500">
-        {type === "create" ? "submit" : "update"}
+      <button className="p-2 rounded-md ring-1 ring-gray-400 text-white bg-blue-500 hover:bg-blue-600 transition" disabled={isPending}>
+         {
+          isPending ? "Saving..." : type == "create" ? "Submit" : "update"
+         }
       </button>
     </form>
   );
